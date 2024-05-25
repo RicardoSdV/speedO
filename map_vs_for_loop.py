@@ -1,5 +1,5 @@
 """
-map() makes list in python27, makes gen in python 3something
+map() makes list in python27, makes map object which is like gen in python 3
 """
 
 from tester import tester
