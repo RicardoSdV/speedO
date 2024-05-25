@@ -1,2 +1,1 @@
-# speedO
-Testing the speed of similar codes
+Testing the speed of similar codes in python 3
