@@ -2,7 +2,7 @@
 map() makes list in python27, makes map object which is like gen in python 3
 """
 
-from tester import tester
+from z_tester import tester
 
 many_nums_list = [i for i in range(10000000)]
 small_nums_list = [i for i in range(100)]

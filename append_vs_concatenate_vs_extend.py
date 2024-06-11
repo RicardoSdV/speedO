@@ -2,7 +2,7 @@
 When you cant use normal list comprehension because the list needs to starts with a
 custom first element what is the best way??
 """
-from tester import tester
+from z_tester import tester
 
 strs_list_2D = [['' for i in range(100)] for j in range(100000)]
 

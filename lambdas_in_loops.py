@@ -1,4 +1,4 @@
-from tester import tester
+from z_tester import tester
 
 
 def using_lambda_for_condition_long_loop():

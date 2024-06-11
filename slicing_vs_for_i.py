@@ -1,4 +1,4 @@
-from tester import tester
+from z_tester import tester
 
 many_nums_list = [i for i in range(10000000)]
 

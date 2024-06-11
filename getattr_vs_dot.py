@@ -1,4 +1,4 @@
-from tester import tester
+from z_tester import tester
 
 
 class TestClass:
