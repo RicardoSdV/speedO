@@ -1,0 +1,126 @@
+from itertools import repeat
+
+
+class Data:
+    @property
+    def ten(self): return  10
+    @property
+    def hun(self): return  100
+    @property
+    def k(self): return    1000
+    @property
+    def k10(self): return  10000
+    @property
+    def k100(self): return 100000
+    @property
+    def M(self): return    1000000
+    @property
+    def M10(self): return  10000000
+    @property
+    def M100(self): return 100000000
+
+    @property
+    def ten_range(self): return  range(self.ten)
+    @property
+    def hun_range(self): return  range(self.hun)
+    @property
+    def k_range(self): return    range(self.k)
+    @property
+    def k10_range(self): return  range(self.k10)
+    @property
+    def k100_range(self): return range(self.k100)
+    @property
+    def M_range(self): return    range(self.M)
+    @property
+    def M10_range(self): return  range(self.M10)
+    @property
+    def M100_range(self): return range(self.M100)
+
+    @property
+    def ten_ints(self): return  list(self.ten_range)
+    @property
+    def hun_ints(self): return  list(self.hun_range)
+    @property
+    def k_ints(self): return    list(self.k_range)
+    @property
+    def k10_ints(self): return  list(self.k10_range)
+    @property
+    def k100_ints(self): return list(self.k100_range)
+    @property
+    def M_ints(self): return    list(self.M_range)
+    @property
+    def M10_ints(self): return  list(self.M10_range)
+    @property
+    def M100_ints(self): return list(self.M100_range)
+
+    @property
+    def ten_repeat(self): return  repeat(None, self.ten)
+    @property
+    def hun_repeat(self): return  repeat(None, self.hun)
+    @property
+    def k_repeat(self): return    repeat(None, self.k)
+    @property
+    def k10_repeat(self): return  repeat(None, self.k10)
+    @property
+    def k100_repeat(self): return repeat(None, self.k100)
+    @property
+    def M_repeat(self): return    repeat(None, self.M)
+    @property
+    def M10_repeat(self): return  repeat(None, self.M10)
+    @property
+    def M100_repeat(self): return repeat(None, self.M100)
+
+    @property
+    def M10__ten_ints(self): return [self.ten_ints for _ in repeat(None, self.M10)]
+    @property
+    def M__hun_ints(self): return   [self.hun_ints for _ in repeat(None, self.M)]
+    @property
+    def k100__k_ints(self): return  [self.k_ints for _ in repeat(None, self.k100)]
+    @property
+    def k10__k10_ints(self): return [self.k10_ints for _ in repeat(None, self.k10)]
+    @property
+    def k__k100_ints(self): return  [self.k100_ints for _ in repeat(None, self.k)]
+    @property
+    def hun__M_ints(self): return   [self.M_ints for _ in repeat(None, self.hun)]
+    @property
+    def ten__M10_ints(self): return [self.M10_ints for _ in repeat(None, self.ten)]
+
+    @property
+    def M__ten_ints(self): return    [self.ten_ints for _ in repeat(None, self.M)]
+    @property
+    def k100__hun_ints(self): return [self.hun_ints for _ in repeat(None, self.k100)]
+    @property
+    def k10__k_ints(self): return    [self.k_ints for _ in repeat(None, self.k10)]
+    @property
+    def k__k10_ints(self): return    [self.k10_ints for _ in repeat(None, self.k)]
+    @property
+    def hun__k100_ints(self): return [self.k100_ints for _ in repeat(None, self.hun)]
+    @property
+    def ten__M_ints(self): return    [self.M_ints for _ in repeat(None, self.ten)]
+
+    @property
+    def k100__ten_ints(self): return    [self.ten_ints for _ in repeat(None, self.k100)]
+    @property
+    def k10__hun_ints(self): return [self.hun_ints for _ in repeat(None, self.k10)]
+    @property
+    def k__k_ints(self): return    [self.k_ints for _ in repeat(None, self.k)]
+    @property
+    def hun__k10_ints(self): return    [self.k10_ints for _ in repeat(None, self.hun)]
+    @property
+    def ten__k100_ints(self): return [self.k100_ints for _ in repeat(None, self.ten)]
+
+
+    @property
+    def slower_3d_list(self):
+        return self.M10__ten_ints, self.M__hun_ints, self.k100__k_ints, self.k10__k10_ints, self.k__k100_ints, self.hun__M_ints, self.ten__M10_ints
+
+    @property
+    def faster_3d_list(self):
+        return self.M__ten_ints, self.k100__hun_ints, self.k10__k_ints, self.k__k10_ints, self.hun__k100_ints, self.ten__M_ints
+
+    @property
+    def super_fast_3d_list(self):
+        return self.k100__ten_ints, self.k10__hun_ints, self.k__k_ints, self.hun__k10_ints, self.ten__k100_ints
+
+
+data = Data()
