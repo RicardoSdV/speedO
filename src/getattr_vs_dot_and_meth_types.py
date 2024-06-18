@@ -10,7 +10,7 @@ def func():
     return
 
 
-class TestClass:
+class TestClass(object):
     @staticmethod
     def static_method(): return
 
@@ -112,15 +112,39 @@ tester(
         obj_getattr_ins,
         obj_getattr_prop,
         func_for_comp,
-    )
+    ),
+    print_rounds=True
 )
 
 """ 
 Conclusion: 
     - Generally getattr slower, but ratio of slowness stays constant, i.e. about 30% slower to use getattr more or less
     
+    Python27 (new style class):
+        - Conclusions from old style classes similar, but everything slightly faster
+    
+        Average of 5 rounds: 
+        Name               Time     %    
+        obj_dot_prop       0.5958   100  
+        obj_dot_cls        0.3794   64   
+        obj_dot_ins        0.3752   63   
+        class_dot_cls      0.3676   62   
+        obj_dot_static     0.342    56   
+        class_dot_static   0.3328   56   
+        func_for_comp      0.2592   44   
+        
+        Average of 5 rounds: 
+        Name                   Time     %    
+        obj_getattr_prop       0.8336   100  
+        obj_getattr_cls        0.6372   76   
+        obj_getattr_ins        0.6346   76   
+        obj_getattr_static     0.603    72   
+        class_getattr_cls      0.6018   72   
+        class_getattr_static   0.5574   67   
+        func_for_comp          0.2586   31   
+    
 
-    Python27:
+    Python27 (old style class):
         - Properties suck, almost twice as slow as instance methods, just used getters and setters
         - Everything else seems is kinda tied, static methods not bad, still functions better
     

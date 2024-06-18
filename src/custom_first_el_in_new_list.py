@@ -3,6 +3,7 @@ When you cant use normal list comprehension because the list needs to start with
 custom first element what is the best way?? Also, the idea is that the list needs
 to be created anew, this is why this test makes sense.
 """
+from src.z_data import data
 from z_tester import tester_2d_loops
 
 
@@ -35,7 +36,8 @@ tester_2d_loops(
         using_concat,
         using_extend,
         using_insert,
-    )
+    ),
+    data.slower_3d_list
 )
 
 """

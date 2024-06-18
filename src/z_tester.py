@@ -1,9 +1,8 @@
-from z_data import data
 from z_utils import get_lens_2d, call__call_callables__repeatedly_get_average_times, sort_times_names_calc_diff, \
     print_averages
 
 
-def tester_2d_loops(callables, return_time=False, list_3d=data.slower_3d_list):
+def tester_2d_loops(callables, list_3d, return_time=False):
     """
     Some test cases involve nested for loops were some variation between the length of the outer and inner
     loops is needed to demonstrate how something behaves with different sizes of data, this tester automates this.
@@ -25,10 +24,12 @@ def tester_2d_loops(callables, return_time=False, list_3d=data.slower_3d_list):
         print('')
 
 
-def tester(callables, is_callables_returning_time=False):
+def tester(callables, is_callables_returning_time=False, print_rounds=True):
     num_repeats = 5
 
-    times = call__call_callables__repeatedly_get_average_times(num_repeats, callables, is_callables_returning_time)
+    times = call__call_callables__repeatedly_get_average_times(
+        num_repeats, callables, is_callables_returning_time, print_rounds=print_rounds
+    )
     names, times, percentages = sort_times_names_calc_diff(times, [func.__name__ for func in callables])
 
     print('Average of {} rounds: '.format(num_repeats))

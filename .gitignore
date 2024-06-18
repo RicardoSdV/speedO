@@ -3,5 +3,8 @@
 .benchmarks/
 .venv/
 venv/
+pypyenv/
+build/
 
 *.pyc
+*.pyd

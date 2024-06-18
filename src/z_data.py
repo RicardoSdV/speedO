@@ -1,4 +1,5 @@
 from itertools import repeat
+from time import time
 
 
 class Data:
@@ -109,18 +110,22 @@ class Data:
     @property
     def ten__k100_ints(self): return [self.k100_ints for _ in repeat(None, self.ten)]
 
-
     @property
     def slower_3d_list(self):
         return self.M10__ten_ints, self.M__hun_ints, self.k100__k_ints, self.k10__k10_ints, self.k__k100_ints, self.hun__M_ints, self.ten__M10_ints
-
     @property
     def faster_3d_list(self):
         return self.M__ten_ints, self.k100__hun_ints, self.k10__k_ints, self.k__k10_ints, self.hun__k100_ints, self.ten__M_ints
-
     @property
     def super_fast_3d_list(self):
         return self.k100__ten_ints, self.k10__hun_ints, self.k__k_ints, self.hun__k10_ints, self.ten__k100_ints
+
+    @property
+    def M_pattern_list(self):
+        return ['A','A','A','A','A','B','A','A','B','A','A','B','B','B','B','B'] * self.M
+    @property
+    def M_no_pattern_list(self):
+        return ['A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A'] * self.M
 
 
 data = Data()
