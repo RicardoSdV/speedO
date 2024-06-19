@@ -1,5 +1,9 @@
-from z_utils import get_lens_2d, call__call_callables__repeatedly_get_average_times, sort_times_names_calc_diff, \
+from z_utils import get_lens_2d, call__call_callables__repeatedly_get_average_results, sort_results_names_calc_diff, \
     print_averages
+
+
+def mem_tester(callables, is_callables_returning_time=False, print_rounds=True, num_repeats=5):
+    pass
 
 
 def tester_2d_loops(callables, list_3d, return_time=False):
@@ -17,21 +21,58 @@ def tester_2d_loops(callables, list_3d, return_time=False):
             num_repeats, len_outer_list, len_inner_list)
         )
 
-        times = call__call_callables__repeatedly_get_average_times(num_repeats, callables, return_time, arg=list_2d)
+        times = call__call_callables__repeatedly_get_average_results(
+            num_repeats, callables, return_time, False, arg=list_2d
+        )
 
-        sorted_names, sorted_times, sorted_percentages = sort_times_names_calc_diff(times, [n for n in names])
+        sorted_names, sorted_times, sorted_percentages = sort_results_names_calc_diff(times, [n for n in names])
         print_averages(sorted_names, sorted_times, sorted_percentages)
         print('')
 
 
-def tester(callables, is_callables_returning_time=False, print_rounds=True):
-    num_repeats = 5
+def tester(callables, testing_what='times', is_callables_returning_time=False, print_rounds=True, num_repeats=5):
 
-    times = call__call_callables__repeatedly_get_average_times(
-        num_repeats, callables, is_callables_returning_time, print_rounds=print_rounds
+    times = call__call_callables__repeatedly_get_average_results(
+        num_repeats, callables, testing_what, is_callables_returning_time, print_rounds
     )
-    names, times, percentages = sort_times_names_calc_diff(times, [func.__name__ for func in callables])
+    names, times, percentages = sort_results_names_calc_diff(times, [func.__name__ for func in callables])
 
-    print('Average of {} rounds: '.format(num_repeats))
-    print_averages(names, times, percentages)
+    print('Testing {} average of {} rounds: '.format(testing_what, num_repeats))
+    print_averages(names, times, percentages, testing_what)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# End

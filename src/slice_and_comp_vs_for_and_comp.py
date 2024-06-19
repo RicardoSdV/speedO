@@ -8,7 +8,7 @@ from itertools import repeat
 from src.z_data import data
 from src.z_tester import tester
 
-chars = data.M_pattern_list
+chars = data.M_ptrn_chars_lsts
 # chars = data.M_no_pattern_list
 # chars = ['A','A','A','A','A','B','A','A','B','A','A','B','B','B','B','B']
 

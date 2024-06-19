@@ -55,21 +55,23 @@ class Data:
     def M100_ints(self): return list(self.M100_range)
 
     @property
-    def ten_repeat(self): return  repeat(None, self.ten)
+    def ptrn_chars_tup(self): return    ('A', 'A', 'A', 'A', 'A', 'B', 'A', 'A', 'B', 'A', 'A', 'B', 'B', 'B', 'B', 'B')
     @property
-    def hun_repeat(self): return  repeat(None, self.hun)
+    def no_ptrn_chars_tup(self): return ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P')
     @property
-    def k_repeat(self): return    repeat(None, self.k)
+    def ptrn_chars_lst(self): return    list(self.ptrn_chars_tup)
     @property
-    def k10_repeat(self): return  repeat(None, self.k10)
+    def no_ptrn_chars_lst(self): return list(self.no_ptrn_chars_tup)
     @property
-    def k100_repeat(self): return repeat(None, self.k100)
+    def ten_chars_str(self): return 'dkdjvns fi'
     @property
-    def M_repeat(self): return    repeat(None, self.M)
+    def hun_chars_str(self): return 'dlahbflk dflkhs dfl bflshb qhb flsdbf lksbfel bsfpiwb fskdbj vkcxzbviuwgsf lkubsdkflab osohfvmaskdh'
     @property
-    def M10_repeat(self): return  repeat(None, self.M10)
+    def k_chars_str(self): return self.hun_chars_str * self.k
     @property
-    def M100_repeat(self): return repeat(None, self.M100)
+    def k__ten_chars(self): return [self.ten_chars_str for _ in repeat(None, self.k)]
+    @property
+    def k__hun_chars(self): return [self.hun_chars_str for _ in repeat(None, self.k)]
 
     @property
     def M10__ten_ints(self): return [self.ten_ints for _ in repeat(None, self.M10)]
@@ -121,11 +123,9 @@ class Data:
         return self.k100__ten_ints, self.k10__hun_ints, self.k__k_ints, self.hun__k10_ints, self.ten__k100_ints
 
     @property
-    def M_pattern_list(self):
-        return ['A','A','A','A','A','B','A','A','B','A','A','B','B','B','B','B'] * self.M
+    def M_ptrn_chars_lsts(self): return self.ptrn_chars_lst * self.M
     @property
-    def M_no_pattern_list(self):
-        return ['A','A','A','A','A','A','A','A','A','A','A','A','A','A','A','A'] * self.M
+    def M_no_ptrn_chars_lsts(self): return self.no_ptrn_chars_lst * self.M
 
 
 data = Data()

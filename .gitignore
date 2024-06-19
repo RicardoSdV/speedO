@@ -5,6 +5,9 @@
 venv/
 pypyenv/
 build/
+venv27/
+venv312/
+venv38/
 
 *.pyc
 *.pyd
