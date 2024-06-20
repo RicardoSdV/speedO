@@ -2,10 +2,6 @@ from z_utils import get_lens_2d, call__call_callables__repeatedly_get_average_re
     print_averages
 
 
-def mem_tester(callables, is_callables_returning_time=False, print_rounds=True, num_repeats=5):
-    pass
-
-
 def tester_2d_loops(callables, list_3d, return_time=False):
     """
     Some test cases involve nested for loops were some variation between the length of the outer and inner

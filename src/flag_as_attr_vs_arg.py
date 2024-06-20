@@ -9,7 +9,7 @@ from src.z_data import data
 from src.z_tester import tester
 
 k = data.k
-k10 = data.k10
+k10 = data.k100
 
 class Cls(object):
     def __init__(self):

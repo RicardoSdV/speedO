@@ -9,7 +9,7 @@ from itertools import repeat
 from src.z_data import data
 from src.z_tester import tester
 
-k100 = data.k10
+k100 = data.k100
 k = data.k
 hun_chars = data.hun_chars_str
 
