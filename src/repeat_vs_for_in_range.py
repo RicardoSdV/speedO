@@ -6,7 +6,7 @@ from itertools import repeat
 from src.z_tester import tester
 from z_data import data
 
-M100 = data.M100
+M100 = data.M10
 M100_range = data.M100_range
 
 

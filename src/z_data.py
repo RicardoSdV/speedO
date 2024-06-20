@@ -19,6 +19,8 @@ class Data:
     def M10(self): return  10000000
     @property
     def M100(self): return 100000000
+    @property
+    def B(self): return    1000000000
 
     @property
     def ten_range(self): return  range(self.ten)
