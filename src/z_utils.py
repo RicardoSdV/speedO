@@ -3,7 +3,7 @@ import time
 from memory_profiler import memory_usage
 
 
-def print_averages(names, results, percentages, testing_what):
+def pretty_print_results(names, results, percentages, testing_what):
     results = [round(_time, 4) for _time in results]
 
     res_col_name = 'Secs' if testing_what == 'times' else 'Mibs' if testing_what == 'memories' else None
@@ -72,7 +72,7 @@ def call_callables_get_memories(callables, _, __):
     return memories
 
 
-def call__call_callables__repeatedly_get_average_results(
+def call__call_callables__repeatedly_get_resultss(
         num_repeats, callables, testing_what, return_time, print_rounds, arg=None
 ):
     if print_rounds: print('Repeating the test {} times'.format(num_repeats))
@@ -94,7 +94,14 @@ def call__call_callables__repeatedly_get_average_results(
 
     if print_rounds: print('')
 
+    return resultss
+
+
+def calc_mean(resultss, num_repeats):
     return [sum(times) / num_repeats for times in zip(*resultss)]
+
+def calc_min(resultss):
+    return [min(times) for times in zip(*resultss)]
 
 
 def make_big_nums_readable(num):

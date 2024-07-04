@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
 """
 Conclusion:
-    - In interpreted python generators get worse and creators better
+    - In interpreted python generators get worse and creators better with more modern versions
     - In pypy JIT generators are very poorly optimized
 
     Python27:
