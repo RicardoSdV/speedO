@@ -104,13 +104,13 @@ class Data:
     def ten__M_ints(self): return    [self.M_ints for _ in repeat(None, self.ten)]
 
     @property
-    def k100__ten_ints(self): return    [self.ten_ints for _ in repeat(None, self.k100)]
+    def k100__ten_ints(self): return [self.ten_ints for _ in repeat(None, self.k100)]
     @property
-    def k10__hun_ints(self): return [self.hun_ints for _ in repeat(None, self.k10)]
+    def k10__hun_ints(self): return  [self.hun_ints for _ in repeat(None, self.k10)]
     @property
-    def k__k_ints(self): return    [self.k_ints for _ in repeat(None, self.k)]
+    def k__k_ints(self): return      [self.k_ints for _ in repeat(None, self.k)]
     @property
-    def hun__k10_ints(self): return    [self.k10_ints for _ in repeat(None, self.hun)]
+    def hun__k10_ints(self): return  [self.k10_ints for _ in repeat(None, self.hun)]
     @property
     def ten__k100_ints(self): return [self.k100_ints for _ in repeat(None, self.ten)]
 

@@ -3,7 +3,7 @@ How much slower is it to use functions for conditions when there is a nested loo
 where the state of the outer loop dictates a condition in the inner loop.
 """
 
-from z_tester import tester_2d_loops
+from z_tester import tester_2d
 
 
 def if_for_condition(outer_list):
@@ -29,7 +29,7 @@ def function_for_condition(outer_list):
                 continue
 
 
-tester_2d_loops(
+tester_2d(
     (
         if_for_condition,
         lambda_for_condition,

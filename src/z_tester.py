@@ -1,34 +1,42 @@
-from z_utils import get_lens_2d, call__call_callables__repeatedly_get_resultss, sort_results_names_calc_diff, \
+from z_utils import get_lens_2d, call_caller_of_callables_repeatedly_get_resultss, sort_results_names_calc_diff, \
     pretty_print_results, calc_mean, calc_min
 
 
-def tester_2d_loops(callables, list_3d, return_time=False):
+def tester_2d(callables, list_3d=None, return_time=False, testing_what='times'):
     """
-    Some test cases involve nested for loops were some variation between the length of the outer and inner
-    loops is needed to demonstrate how something behaves with different sizes of data, this tester automates this.
+    Some tests involve nested loops were some variation between loop length is needed
+    to demonstrate how something behaves with different data sizes, this tester automates this.
     """
 
     num_repeats = 3
     names = [func.__name__ for func in callables]
 
+    if list_3d is None:
+        from z_data import data
+        list_3d = data.faster_3d_list
+
+    print('Testing {}:\n'.format(testing_what))
     for list_2d in list_3d:
         len_outer_list, len_inner_list = get_lens_2d(list_2d)
         print('Average of {} rounds, len(outer_list) = {}, len(inner_list) = {}: '.format(
             num_repeats, len_outer_list, len_inner_list)
         )
 
-        times = call__call_callables__repeatedly_get_resultss(
-            num_repeats, callables, return_time, False, arg=list_2d
+        resultss = call_caller_of_callables_repeatedly_get_resultss(
+            num_repeats, callables, testing_what, return_time, False, arg=list_2d
         )
 
-        sorted_names, sorted_times, sorted_percentages = sort_results_names_calc_diff(times, [n for n in names])
-        pretty_print_results(sorted_names, sorted_times, sorted_percentages)
+        result = calc_mean(resultss, num_repeats)
+
+        sorted_names, sorted_results, sorted_percentages = sort_results_names_calc_diff(result, [n for n in names])
+        pretty_print_results(sorted_names, sorted_results, sorted_percentages, testing_what)
         print('')
+    print('')
 
 
 def tester(callables, testing_what='times', is_callables_returning_time=False, print_rounds=True, num_repeats=5, calking_what='default'):
 
-    resultss = call__call_callables__repeatedly_get_resultss(
+    resultss = call_caller_of_callables_repeatedly_get_resultss(
         num_repeats, callables, testing_what, is_callables_returning_time, print_rounds
     )
 

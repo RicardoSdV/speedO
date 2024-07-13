@@ -6,7 +6,7 @@ map() makes list in python27, in python3 makes map object which is like gen
 from sys import version
 
 from src.z_data import data
-from z_tester import tester_2d_loops
+from z_tester import tester_2d
 
 if version.startswith('2'):
     def map_with_lambda(outer_list):
@@ -28,7 +28,7 @@ if version.startswith('2'):
             res = [pre_defined_func(n) for n in inner_list]
 
 
-    tester_2d_loops(
+    tester_2d(
         (
             map_with_lambda,
             map_with_pre_defined_func,
@@ -70,7 +70,7 @@ else:
                 continue
 
 
-    tester_2d_loops(
+    tester_2d(
         (
             map_with_lambda,
             map_with_pre_defined_func,

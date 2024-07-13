@@ -2,7 +2,7 @@
 How much slower is popping back than popping front?
 """
 from src.z_data import data
-from z_tester import tester_2d_loops
+from z_tester import tester_2d
 
 
 def pop_front(outer):
@@ -15,7 +15,7 @@ def pop_back(outer):
         inner.pop()
 
 
-tester_2d_loops(
+tester_2d(
     (
         pop_front,
         pop_back,

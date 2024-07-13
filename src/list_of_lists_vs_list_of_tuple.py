@@ -1,7 +1,7 @@
 """
 How much slower is it to create a list of tuples than a list of lists?
 How much memory do I save by creating a list of tuples?
-The point is to use in STACK this is why all the appending
+The point is to use in STAK this is why all the appending
 """
 
 from itertools import repeat

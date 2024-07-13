@@ -4,7 +4,7 @@ custom first element what is the best way?? Also, the idea is that the list need
 to be created anew, this is why this test makes sense.
 """
 from src.z_data import data
-from z_tester import tester_2d_loops
+from z_tester import tester_2d
 
 
 def using_append(list_2d):
@@ -30,7 +30,7 @@ def using_insert(list_2d):
         new_list.insert(0, -1)
 
 
-tester_2d_loops(
+tester_2d(
     (
         using_append,
         using_concat,

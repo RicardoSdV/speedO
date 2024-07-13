@@ -18,23 +18,27 @@ def pretty_print_results(names, results, percentages, testing_what):
 
 
 def sort_results_names_calc_diff(results, names):
-    sorted_names, sorted_times, sorted_percentages, super_max_time = [], [], [], None
+    sorted_names, sorted_times, sorted_percentages, super_max_result = [], [], [], None
+    append_to_sorted_percentages = sorted_percentages.append
 
     while results and names:
         max_index = results.index(max(results))
         max_name = names.pop(max_index)
-        max_time = results.pop(max_index)
+        max_result = results.pop(max_index)
 
         sorted_names.append(max_name)
-        sorted_times.append(max_time)
+        sorted_times.append(max_result)
 
-        if super_max_time is None:
-            super_max_time = max_time
-            sorted_percentages.append(100)
+        if super_max_result is None:
+            super_max_result = max_result
+            append_to_sorted_percentages(100)
         else:
-            sorted_percentages.append(
-                int(round(max_time/super_max_time, 2) * 100)
-            )
+            if super_max_result > 0:
+                append_to_sorted_percentages(
+                    int(round(max_result/super_max_result, 2) * 100)
+                )
+            else:
+                append_to_sorted_percentages(0)
 
     return sorted_names, sorted_times, sorted_percentages
 
@@ -63,16 +67,16 @@ def call_callables_get_times(callables, arg, return_time):
     return times
 
 
-def call_callables_get_memories(callables, _, __):
+def call_callables_get_memories(callables, arg, __):
     memories = []
     for func in callables:
-        mem_usages = memory_usage(func)
+        mem_usages = memory_usage((func, (arg, ), {}))
         max_mem_use = max(mem_usages) - min(mem_usages)
         memories.append(max_mem_use)
     return memories
 
 
-def call__call_callables__repeatedly_get_resultss(
+def call_caller_of_callables_repeatedly_get_resultss(
         num_repeats, callables, testing_what, return_time, print_rounds, arg=None
 ):
     if print_rounds: print('Repeating the test {} times'.format(num_repeats))

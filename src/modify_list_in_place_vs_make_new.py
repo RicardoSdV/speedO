@@ -4,7 +4,7 @@ What is the fastest way of modifying a list in place?
 """
 
 from src.z_data import data
-from z_tester import tester_2d_loops
+from z_tester import tester_2d
 
 
 def mod_list_in_place_with_range_len(outer):
@@ -29,7 +29,7 @@ def mod_list_in_place_with_with_colon_range_len(outer):
         inner[:] = [inner[i] - 1 for i in range(len(inner))]
 
 
-tester_2d_loops(
+tester_2d(
     (
         mod_list_in_place_with_range_len,
         mod_list_in_place_with_enumerate,

@@ -2,7 +2,7 @@ import itertools
 import sys
 
 from src.z_data import data
-from z_tester import tester_2d_loops
+from z_tester import tester_2d
 
 """ Small group """
 
@@ -66,7 +66,7 @@ else:
 
 """=============================================="""
 
-tester_2d_loops(
+tester_2d(
     (
         for_i_next_2,
         slice_next_2,
