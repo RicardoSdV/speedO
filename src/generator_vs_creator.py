@@ -171,112 +171,108 @@ Python27:
     using_generator      0.2603   61   
     predef_append        0.248    59   
     list_comprehension   0.193    46   
+    
+    
+Python310:
+    Average of 3 rounds, len(outer_list) = 1 000 000, len(inner_list) = 10: 
+    Name                 Mibs     %    
+    using_creator        0.1081   100  
+    using_generator      0.0013   1    
+    normal_append        0.0013   1    
+    predef_append        0.0      0    
+    list_comprehension   0.0      0    
+    
+    Average of 3 rounds, len(outer_list) = 100 000, len(inner_list) = 100: 
+    Name                 Mibs     %    
+    normal_append        0.0078   100  
+    using_creator        0.0      0    
+    using_generator      0.0      0    
+    predef_append        0.0      0    
+    list_comprehension   0.0      0    
+    
+    Average of 3 rounds, len(outer_list) = 10 000, len(inner_list) = 1 000: 
+    Name                 Mibs     %    
+    using_creator        0.0729   100  
+    using_generator      0.0      0    
+    normal_append        0.0      0    
+    predef_append        0.0      0    
+    list_comprehension   0.0      0    
+    
+    Average of 3 rounds, len(outer_list) = 1 000, len(inner_list) = 10 000: 
+    Name                 Mibs     %    
+    using_generator      0.1471   100  
+    using_creator        0.125    85   
+    normal_append        0.0521   35   
+    predef_append        0.0      0    
+    list_comprehension   0.0      0    
+    
+    Average of 3 rounds, len(outer_list) = 100, len(inner_list) = 100 000: 
+    Name                 Mibs     %    
+    using_creator        0.9193   100  
+    using_generator      0.0      0    
+    normal_append        0.0      0    
+    predef_append        0.0      0    
+    list_comprehension   0.0      0    
+    
+    Average of 3 rounds, len(outer_list) = 10, len(inner_list) = 1 000 000: 
+    Name                 Mibs      %    
+    list_comprehension   19.8177   100  
+    using_creator        16.1628   82   
+    using_generator      16.0      81   
+    predef_append        7.8503    40   
+    normal_append        5.8411    28   
+    
+    
+    Testing times:
+    
+    Average of 3 rounds, len(outer_list) = 1 000 000, len(inner_list) = 10: 
+    Name                 Secs     %    
+    using_creator        0.4257   100  
+    using_generator      0.3057   72   
+    normal_append        0.2115   50   
+    predef_append        0.1911   45   
+    list_comprehension   0.1752   41   
+    
+    Average of 3 rounds, len(outer_list) = 100 000, len(inner_list) = 100: 
+    Name                 Secs     %    
+    using_creator        0.3394   100  
+    using_generator      0.2139   63   
+    normal_append        0.2124   63   
+    predef_append        0.1739   51   
+    list_comprehension   0.1103   33   
+    
+    Average of 3 rounds, len(outer_list) = 10 000, len(inner_list) = 1 000: 
+    Name                 Secs     %    
+    using_creator        0.3262   100  
+    normal_append        0.1988   61   
+    using_generator      0.1933   59   
+    predef_append        0.1553   48   
+    list_comprehension   0.0984   30   
+    
+    Average of 3 rounds, len(outer_list) = 1 000, len(inner_list) = 10 000: 
+    Name                 Secs     %    
+    using_creator        0.3135   100  
+    normal_append        0.1905   61   
+    using_generator      0.1868   60   
+    predef_append        0.1496   48   
+    list_comprehension   0.0887   28   
+    
+    Average of 3 rounds, len(outer_list) = 100, len(inner_list) = 100 000: 
+    Name                 Secs     %    
+    using_creator        0.3144   100  
+    normal_append        0.1942   62   
+    using_generator      0.1892   60   
+    predef_append        0.1507   48   
+    list_comprehension   0.0929   30   
+    
+    Average of 3 rounds, len(outer_list) = 10, len(inner_list) = 1 000 000: 
+    Name                 Secs     %    
+    using_creator        0.4197   100  
+    normal_append        0.3015   72   
+    using_generator      0.296    71   
+    predef_append        0.255    61   
+    list_comprehension   0.1968   47   
+    
+    
 """
-
-
-
-
-
-
-"""
-Deprecated in favour of 2d test
-
-
-k = data.k
-k100 = data.k100
-k_range = data.k_range
-
-
-def creator(num):
-    return num + 1
-
-
-def generator():
-    for i in k_range:
-        yield i + 1
-
-
-def using_creator(list_2d):
-    for _ in repeat(None, k100):
-        result = [creator(i) for i in k_range]
-
-
-def using_generator():
-    for _ in repeat(None, k100):
-        result = list(generator())
-
-
-if __name__ == '__main__':
-    tester(
-        (
-            using_creator,
-            using_generator,
-        ),
-        testing_what='memories'
-    )
-
-    tester(
-        (
-            using_creator,
-            using_generator,
-        ),
-        testing_what='times'
-    )
-
-
-
-Conclusion:
-    - In interpreted python generators get worse and creators better with more modern versions
-    - In pypy JIT generators are very poorly optimized
-
-    Python27:
-        Testing memories average of 5 rounds: 
-        Name              Mibs     %    
-        using_creator     0.1734   100  
-        using_generator   0.125    72   
-        
-        Testing times average of 5 rounds: 
-        Name              Secs     %    
-        using_creator     3.9394   100  
-        using_generator   2.2968   57   
-        
-    Python38:
-        Testing memories average of 5 rounds: 
-        Name              Mibs     %    
-        using_creator     0.2148   100  
-        using_generator   0.1219   56   
-
-        Testing times average of 5 rounds: 
-        Name              Secs     %    
-        using_creator     3.7236   100  
-        using_generator   2.6188   70   
-        
-    Python312:
-        Testing memories average of 5 rounds: 
-        Name              Mibs     %    
-        using_creator     0.0734   100  
-        using_generator   0.0211   28   
-        
-        Testing times average of 5 rounds: 
-        Name              Secs     %    
-        using_creator     3.1907   100  
-        using_generator   2.8827   90   
-        
-    Pypy313:
-        Testing memories average of 5 rounds: 
-        Name              Mibs      %    
-        using_generator   13.0359   100  
-        using_creator     1.7398    13   
-        
-        Testing times average of 5 rounds: 
-        Name              Secs     %    
-        using_generator   0.5231   100  
-        using_creator     0.1251   24   
-
-
-"""
-
-
-
-
 

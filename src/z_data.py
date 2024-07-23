@@ -1,3 +1,4 @@
+from collections import deque
 from itertools import repeat
 from time import time
 
@@ -115,6 +116,19 @@ class Data:
     def ten__k100_ints(self): return [self.k100_ints for _ in repeat(None, self.ten)]
 
     @property
+    def M__ten_ints_deque(self): return    deque(self.M__ten_ints)
+    @property
+    def k100__hun_ints_deque(self): return deque(self.k100__hun_ints)
+    @property
+    def k10__k_ints_deque(self): return    deque(self.k10__k_ints)
+    @property
+    def k__k10_ints_deque(self): return    deque(self.k__k10_ints)
+    @property
+    def hun__k100_ints_deque(self): return deque(self.hun__k100_ints)
+    @property
+    def ten__M_ints_deque(self): return    deque(self.ten__M_ints)
+
+    @property
     def slower_3d_list(self):
         return self.M10__ten_ints, self.M__hun_ints, self.k100__k_ints, self.k10__k10_ints, self.k__k100_ints, self.hun__M_ints, self.ten__M10_ints
     @property
@@ -123,6 +137,21 @@ class Data:
     @property
     def super_fast_3d_list(self):
         return self.k100__ten_ints, self.k10__hun_ints, self.k__k_ints, self.hun__k10_ints, self.ten__k100_ints
+
+    @property
+    def faster_3d_deque(self):
+        return self.M__ten_ints_deque, self.k100__hun_ints_deque, self.k10__k_ints_deque, self.k__k10_ints_deque, self.hun__k100_ints_deque, self.ten__M_ints_deque
+
+    @property
+    def shuffled_faster_3d_list(self):
+        from random import shuffle
+
+        shufflee = self.faster_3d_list
+        for outer in shufflee:
+            for inner in outer:
+                shuffle(inner)
+
+        return shufflee
 
     @property
     def M_ptrn_chars_lsts(self): return self.ptrn_chars_lst * self.M

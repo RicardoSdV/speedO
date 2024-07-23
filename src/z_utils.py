@@ -68,10 +68,9 @@ def call_callables_get_times(callables, arg, return_time):
 
 
 def call_callables_get_memories(callables, arg, __):
-    arg = (arg, ) if arg is not None else ()
     memories = []
     for func in callables:
-        mem_usages = memory_usage((func, arg, {}))
+        mem_usages = memory_usage((func, (arg, ), {}))
         max_mem_use = max(mem_usages) - min(mem_usages)
         memories.append(max_mem_use)
     return memories
