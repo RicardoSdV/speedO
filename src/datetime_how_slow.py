@@ -68,6 +68,8 @@ Conclusion:
     now. If the accuracy & complexity tradeoff is worth it then it probably should be done,
     even though, in a real situation the reference to the global now probably needs to be imported
     into a bunch of places.
+    
+    And since its an immutable object the copy thing doesn't really make sense
 
     Python312:
         Testing times mean of 5 rounds: 
