@@ -18,20 +18,11 @@ def if_in(__=None):
         if None in (a, b):
             continue
 
-if __name__ =='__main__':
-    tester(
-        (
-            if_is,
-            if_in,
-        ),
-        testing_what='times'
-    )
-
-    tester(
-        (
-            if_is,
-            if_in,
-        ),
-        testing_what='memories'
-    )
+tester(
+    (
+        if_is,
+        if_in,
+    ),
+    testing_what='times'
+)
 

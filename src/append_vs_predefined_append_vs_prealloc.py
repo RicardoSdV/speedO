@@ -28,15 +28,15 @@ def prealloc_with_enumerate(list_2d):
             result[i] = j+1
 
 
-# tester_2d_loops(
-#     (
-#         normal_append,
-#         predef_append,
-#         prealloc_with_enumerate,
-#     ),
-#     data.slower_3d_list,
-#     testing_what='times'
-# )
+tester_2d(
+    (
+        normal_append,
+        predef_append,
+        prealloc_with_enumerate,
+    ),
+    data.slower_3d_list,
+    testing_what='times'
+)
 
 if __name__ == '__main__':
     tester_2d(
