@@ -2,6 +2,8 @@
 What is the best way of storing a time info in memory?
 What is the fastest way of creating said memory?
 """
+import gc
+import time
 from datetime import datetime
 from itertools import repeat
 
@@ -18,12 +20,18 @@ def datetime_stamp():
     for _ in repeat(None, num):
         append_to_result(datetime.now())
 
+    del result
+    gc.collect()
+
 def time_stamp():
     result = []
     append_to_result = result.append
 
     for _ in repeat(None, num):
         append_to_result(datetime.now().time())
+
+    del result
+    gc.collect()
 
 def int_datetime_stamp():
     result = []
@@ -33,6 +41,9 @@ def int_datetime_stamp():
         now = datetime.now()
         append_to_result((now.year, now.month, now.day, now.hour, now.minute, now.second, now.microsecond//1000))
 
+    del result
+    gc.collect()
+
 def int_time_stamp():
     result = []
     append_to_result = result.append
@@ -41,21 +52,38 @@ def int_time_stamp():
         now = datetime.now()
         append_to_result((now.hour, now.minute, now.second, now.microsecond//1000))
 
+    del result
+    gc.collect()
+
 def str_datetime_stamp():
     result = []
     append_to_result = result.append
 
     for _ in repeat(None, num):
-        now = datetime.now()
-        append_to_result(now.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
+        append_to_result(datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3])
+
+    del result
+    gc.collect()
 
 def str_time_stamp():
     result = []
     append_to_result = result.append
 
     for _ in repeat(None, num):
-        now = datetime.now()
-        append_to_result(now.strftime('%H:%M:%S.%f')[:-3])
+        append_to_result(datetime.now().strftime('%H:%M:%S.%f')[:-3])
+
+    del result
+    gc.collect()
+
+def unix_time():
+    result = []
+    append_to_result = result.append
+
+    for _ in repeat(None, num):
+        append_to_result(time.time())
+
+    del result
+    gc.collect()
 
 
 if __name__ == '__main__':
@@ -67,6 +95,7 @@ if __name__ == '__main__':
             int_time_stamp,
             str_datetime_stamp,
             str_time_stamp,
+            unix_time,
         ),
         testing_what='times'
     )
@@ -78,112 +107,125 @@ if __name__ == '__main__':
             int_time_stamp,
             str_datetime_stamp,
             str_time_stamp,
+            unix_time,
         ),
         testing_what='memories'
     )
 
 """
 Conclusion:
-    Seems like datetime objects are incredibly well optimized, & one of the few occasions were
-    in Python27 they use less memory and as the versions increase they get faster, yet start
-    using more memory.
+    - Unix stamps are the way to go for almost everything 
+    (probably not if you want to immediately print, then a datetime is probably better)
     
-    Caveat: The microseconds are //1000 because that much precision is mostly useless, but this 
-    definitely mas the non str and int stamp creation slower, yet should reduce memory
-
+    - datetime uses less memory in Python27 in later versions uses more.
+    
+    - datetime is slower in Python27 faster in later versions
+    
+    - Seems like any sort of turning anything into ints or strs is just bad
+    
     Python27:
         Testing times mean of 5 rounds: 
         Name                 Secs     %    
-        str_datetime_stamp   1.4892   100  
-        str_time_stamp       1.3898   93   
-        int_datetime_stamp   0.53     36   
-        int_time_stamp       0.4622   31   
-        time_stamp           0.3824   26   
-        datetime_stamp       0.3582   24   
+        str_datetime_stamp   1.4562   100  
+        str_time_stamp       1.3602   93   
+        int_datetime_stamp   0.538    37   
+        int_time_stamp       0.4724   32   
+        time_stamp           0.3788   26   
+        datetime_stamp       0.3624   25   
+        unix_time            0.06     4    
         
         Testing memories mean of 5 rounds: 
         Name                 Mibs      %    
-        int_datetime_stamp   71.9648   100  
-        str_datetime_stamp   67.0156   93   
-        str_time_stamp       51.9961   72   
-        datetime_stamp       35.9102   50   
-        int_time_stamp       10.6719   15   
-        time_stamp           6.1523    9    
+        int_datetime_stamp   65.3281   100  
+        str_datetime_stamp   45.3828   69   
+        int_time_stamp       16.6523   25   
+        datetime_stamp       8.9414    14   
+        str_time_stamp       7.6797    12   
+        unix_time            7.1563    11   
+        time_stamp           7.0703    11   
     
     Python38:
         Testing times mean of 5 rounds: 
         Name                 Secs     %    
-        str_datetime_stamp   3.6034   100  
-        str_time_stamp       2.8248   78   
-        int_datetime_stamp   0.3165   9    
-        int_time_stamp       0.2748   8    
-        time_stamp           0.2018   6    
-        datetime_stamp       0.1809   5    
+        str_datetime_stamp   1.4562   100  
+        str_time_stamp       1.3602   93   
+        int_datetime_stamp   0.538    37   
+        int_time_stamp       0.4724   32   
+        time_stamp           0.3788   26   
+        datetime_stamp       0.3624   25   
+        unix_time            0.06     4    
         
         Testing memories mean of 5 rounds: 
-        Name                 Mibs       %    
-        int_datetime_stamp   114.4961   100  
-        str_datetime_stamp   82.6836    72   
-        int_time_stamp       80.5156    70   
-        str_time_stamp       66.2578    57   
-        datetime_stamp       49.5469    43   
-        time_stamp           34.6367    30   
+        Name                 Mibs      %    
+        int_datetime_stamp   65.3281   100  
+        str_datetime_stamp   45.3828   69   
+        int_time_stamp       16.6523   25   
+        datetime_stamp       8.9414    14   
+        str_time_stamp       7.6797    12   
+        unix_time            7.1563    11   
+        time_stamp           7.0703    11   
     
     Python310:
         Testing times mean of 5 rounds: 
         Name                 Secs     %    
-        str_datetime_stamp   3.6001   100  
-        str_time_stamp       2.8134   78   
-        int_datetime_stamp   0.339    9    
-        int_time_stamp       0.2886   8    
-        time_stamp           0.2146   6    
-        datetime_stamp       0.1935   5    
+        str_datetime_stamp   3.5771   100  
+        str_time_stamp       2.816    79   
+        int_datetime_stamp   0.3397   9    
+        int_time_stamp       0.2926   8    
+        time_stamp           0.2192   6    
+        datetime_stamp       0.1996   6    
+        unix_time            0.0605   2    
         
         Testing memories mean of 5 rounds: 
-        Name                 Mibs      %    
-        int_datetime_stamp   94.3789   100  
-        str_datetime_stamp   77.0195   82   
-        int_time_stamp       74.8086   79   
-        str_time_stamp       63.6055   67   
-        datetime_stamp       46.6602   49   
-        time_stamp           15.0859   16   
+        Name                 Mibs       %    
+        int_datetime_stamp   109.7188   100  
+        str_datetime_stamp   76.8438    70   
+        str_time_stamp       61.7188    56   
+        int_time_stamp       60.7578    55   
+        datetime_stamp       44.1328    40   
+        time_stamp           31.332     28   
+        unix_time            28.6641    26   
     
     Python312:
         Testing times mean of 5 rounds: 
         Name                 Secs     %    
-        str_datetime_stamp   3.702    100  
-        str_time_stamp       2.9782   80   
-        int_datetime_stamp   0.3399   9    
-        int_time_stamp       0.2936   8    
-        time_stamp           0.212    6    
-        datetime_stamp       0.1942   5    
+        str_datetime_stamp   3.7104   100  
+        str_time_stamp       2.9172   79   
+        int_datetime_stamp   0.3448   9    
+        int_time_stamp       0.2979   8    
+        time_stamp           0.2183   6    
+        datetime_stamp       0.2003   5    
+        unix_time            0.0529   1    
         
         Testing memories mean of 5 rounds: 
         Name                 Mibs      %    
-        int_datetime_stamp   86.4648   100  
-        int_time_stamp       69.2773   80   
-        str_time_stamp       59.6953   69   
-        str_datetime_stamp   59.5938   69   
-        datetime_stamp       40.6641   47   
-        time_stamp           27.1992   31   
+        int_datetime_stamp   94.8789   100  
+        str_datetime_stamp   55.5312   59   
+        str_time_stamp       55.4922   57   
+        int_time_stamp       52.7148   56   
+        datetime_stamp       39.0703   41   
+        unix_time            18.3281   19   
+        time_stamp           8.875     9   
     
     PyPy313:
         Testing times mean of 5 rounds: 
         Name                 Secs     %    
-        str_datetime_stamp   1.5705   100  
-        str_time_stamp       1.4381   92   
-        int_datetime_stamp   1.0036   64   
-        int_time_stamp       0.9586   61   
-        datetime_stamp       0.9561   61   
-        time_stamp           0.9402   60   
+        str_datetime_stamp   1.5908   100  
+        str_time_stamp       1.4266   90   
+        int_datetime_stamp   1.0053   63   
+        datetime_stamp       0.9937   62   
+        int_time_stamp       0.9449   59   
+        time_stamp           0.9314   59   
+        unix_time            0.0543   3    
         
         Testing memories mean of 5 rounds: 
         Name                 Mibs       %    
-        int_time_stamp       167.5      100  
-        str_datetime_stamp   129.9492   78   
-        int_datetime_stamp   128.4453   77   
-        time_stamp           128.3594   77   
-        datetime_stamp       106.3047   63   
-        str_time_stamp       47.9141    28   
+        str_datetime_stamp   150.0039   100  
+        int_time_stamp       141.625    94   
+        time_stamp           110.4414   74   
+        datetime_stamp       90.5586    60   
+        int_datetime_stamp   85.4336    56   
+        str_time_stamp       57.8867    39   
+        unix_time            16.8516    11   
 """
 
