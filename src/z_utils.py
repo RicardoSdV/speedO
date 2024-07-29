@@ -97,7 +97,7 @@ def call_caller_of_callables_repeatedly_get_resultss(
             caller_of_callables(callables, arg, return_time)
         )
 
-    if print_rounds: print('')
+    print('')
 
     return resultss
 
