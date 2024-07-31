@@ -1,9 +1,7 @@
 """
-Let's say you have a list which is periodically populated & something else is done with those elements
-so they are no longer needed. And, more or less the number of elements is similar every time. The easy
-way would be to create a new list every time and let the old list be garbage collected. But what if the
-same list is always used? would it be faster?, the assumption is that the list does not need to be
-resized very often after the first bunch of runs
+Compare the performance of IPLs when they don't need to grow
+
+Work in progress
 """
 
 from itertools import repeat, islice
@@ -14,6 +12,15 @@ from numpy import empty
 
 from src.z_data import data
 from src.z_tester import tester
+
+rep_cnt = data.k10
+
+# lines1 = tuple((''.join(choice(printable) for _ in repeat(None, 120)) for _ in repeat(None, 1000)))
+# lines2 = tuple(reversed(lines1))
+
+lines1 = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')
+lines2 = tuple(reversed(lines1))
+
 
 class IPL:
     """ In Place List """
@@ -26,50 +33,44 @@ class IPL:
 
     def append(self, element):
         self._idx += 1
-        if self._len_list == self._idx:
+        try:
+            self._list[self._idx] = element
+        except IndexError:
             self._list.append(element)
             self._len_list += 1
-        else:
-            self._list[self._idx] = element
 
     def reset(self):
         yield from islice(self._list, self._idx+1)
         self._idx = -1
 
-
-class IPLnp:
-    """ In Place List using NumPy arrays """
-    __slots__ = ('_idx', '_capacity', '_array')
+class IPL2:
+    """ In Place List """
+    __slots__ = ('_idx', '_list', '_len_list', '_append')
 
     def __init__(self):
-        self._idx = -1   # Index of the first valid element
-        self._capacity = 1  # Max number of elements in the array
-        self._array = empty(self._capacity, dtype='S128')
+        self._idx = -1
+        self._list = []
+        self._len_list = 0  # Yes, faster than len()
+        self._append = self._append_gen()
+
+    def _append_gen(self):
+        for i in range(self._len_list):
+            element = yield
+            self._list[i] = element
+            yield i
 
     def append(self, element):
-        self._idx += 1
-        if self._idx == self._capacity:
-
-            self._capacity *= 2
-            new_array = empty(self._capacity, dtype='S128')
-
-            new_array[:self._idx] = self._array[:self._idx]
-            self._array = new_array
-
-        self._array[self._idx] = element
+        try:
+            next(self._append)
+            self._idx = self._append.send(element)
+        except StopIteration:
+            self._list.append(element)
+            self._len_list += 1
+            self._idx += 1
+            self._append = self._append_gen()
 
     def reset(self):
-        yield from islice(self._array, self._idx+1)
-        self._idx = -1
-
-
-rep_cnt = data.M10
-lines1 = tuple((''.join(choice(printable) for _ in repeat(None, 120)) for _ in repeat(None, 1000)))
-lines2 = tuple(reversed(lines1))
-
-# For testing
-# lines1 = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')
-# lines2 = tuple(reversed(lines1))
+        yield from islice(self._list, self._idx+1)
 
 
 def run_ipl():
@@ -79,56 +80,49 @@ def run_ipl():
     _lines1, _lines2 = lines1, lines2
 
     for _ in repeat(None, rep_cnt):
-
         for line in _lines1: append_to_ipl(line)
-
         for el in reset_ipl(): continue
-
         for line in lines2: append_to_ipl(line)
-
         for el in reset_ipl(): continue
 
-def run_iplnp():
-    ipl = IPLnp()
+    print(ipl._list)
+
+def run_ipl2():
+    ipl = IPL2()
     append_to_ipl = ipl.append
     reset_ipl = ipl.reset
     _lines1, _lines2 = lines1, lines2
 
     for _ in repeat(None, rep_cnt):
-
         for line in _lines1: append_to_ipl(line)
-
         for el in reset_ipl(): continue
-
         for line in lines2: append_to_ipl(line)
-
         for el in reset_ipl(): continue
+
+    print(ipl._list)
+
 
 def run_normal_list():
     _list = []
     append_to_list = _list.append
-    _lines1, _lines2 = lines1   , lines2
+    _lines1, _lines2 = lines1, lines2
 
     for _ in repeat(None, rep_cnt):
-
         for line in _lines1: append_to_list(line)
-
         for el in _list: continue
         _list = []
-
         for line in _lines2: append_to_list(line)
-
         for el in _list: continue
         _list = []
-
 
 if __name__ == '__main__':
     tester(
         (
             run_ipl,
+            run_ipl2,
             run_normal_list,
         ),
-        num_repeats = 1,
+        num_repeats = 5,
     )
     # tester(
     #     (

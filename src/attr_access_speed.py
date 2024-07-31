@@ -187,7 +187,7 @@ Conclusion:
         
     Python310:
         - Seems that static methods get better an so it might
-        be worth it if num self attr accessed between 1 & 5
+        be worth it if outer_num self attr accessed between 1 & 5
         
         Testing times mean of 5 rounds: 
         Name                             Secs     %    
@@ -209,7 +209,7 @@ Conclusion:
         
     Python312:
         - Seems that static methods get better an so it might
-        be worth it if num self attr accessed between 1 & 5
+        be worth it if outer_num self attr accessed between 1 & 5
         
         Testing times mean of 5 rounds: 
         Name                             Secs     %    
