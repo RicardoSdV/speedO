@@ -73,25 +73,37 @@ def call_for_func_with_args():
         for_func(b=1, c=2)
 
 
-if __name__ == '__main__':
-    tester(
-        (
-            call_update_func_no_args,
-            call_update_func_with_args,
-            call_get_func_no_args,
-            call_get_func_with_args,
-            call_if_func_no_args,
-            call_if_func_with_args,
-            call_for_func_no_args,
-            call_for_func_with_args,
-        )
+tester(
+    (
+        call_update_func_no_args,
+        call_update_func_with_args,
+        call_get_func_no_args,
+        call_get_func_with_args,
+        call_if_func_no_args,
+        call_if_func_with_args,
+        call_for_func_no_args,
+        call_for_func_with_args,
     )
+)
+
+tester(
+    (
+        call_update_func_no_args,
+        call_update_func_with_args,
+        call_get_func_no_args,
+        call_get_func_with_args,
+        call_if_func_no_args,
+        call_if_func_with_args,
+        call_for_func_no_args,
+        call_for_func_with_args,
+    )
+)
 
 
 """
 Conclusion:
+    - Good old ifs
     Python27:
-        - Good old ifs
         
         Testing times mean of 5 rounds: 
         Name                         Secs     %    
@@ -103,4 +115,16 @@ Conclusion:
         call_update_func_no_args     1.2732   65   
         call_for_func_no_args        1.175    60   
         call_if_func_no_args         0.8062   41  
+        
+    Python310:
+        Testing times mean of 5 rounds: 
+        Name                         Secs     %    
+        call_for_func_with_args      1.6011   100  
+        call_get_func_with_args      1.2092   76   
+        call_update_func_with_args   1.1645   73   
+        call_if_func_with_args       1.148    72   
+        call_get_func_no_args        1.0165   63   
+        call_for_func_no_args        0.945    59   
+        call_update_func_no_args     0.7493   47   
+        call_if_func_no_args         0.7041   44   
 """

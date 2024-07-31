@@ -273,6 +273,5 @@ Python310:
     predef_append        0.255    61   
     list_comprehension   0.1968   47   
     
-    
 """
 
