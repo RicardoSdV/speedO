@@ -86,6 +86,9 @@ tester(
 Conclusion:
     - Normally becomes worth it at 4 usages
     
+    - To be fair memory & deletion speeds are not being measured, im sure there are
+    some hidden costs to declaring locals all over the place    
+    
     Python27:
         - Becomes worth it at 4 usages
         
