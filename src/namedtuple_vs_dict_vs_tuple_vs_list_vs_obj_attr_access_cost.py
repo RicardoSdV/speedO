@@ -180,8 +180,8 @@ tester(
 
 """
 Conclusion:
-    - If one can say something across the board is that to access by name, obj with __slots__, to access by index list fastest, 
-    to unpack tuple fastest, there's exceptions. Do look at instantiation costs too.
+    - If one can say something across the board is that to access by name, obj with __slots__, to access by index, list, 
+    to unpack, tuple; there's exceptions. Do look at instantiation costs.
     
     - If theres something to really not do is access namedtuple by name in python27, & to unpack the values of a dict.
     
@@ -278,4 +278,3 @@ Conclusion:
         access_list_by_unpack            0.1609   33   
         access_tuple_by_unpacking        0.1529   31   
 """
-
