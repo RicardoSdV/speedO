@@ -180,19 +180,19 @@ tester(
 
 """
 Conclusion:
-    - If one can say something across the board is that to access by name, obj with __slots__, to access by index, list, 
+    - If one can say something across the board is that to access by attr, obj with __slots__, to access by index, list, 
     to unpack, tuple; there's exceptions. Do look at instantiation costs.
     
-    - If theres something to really not do is access namedtuple by name in python27, & to unpack the values of a dict.
+    - If theres something to really not do is access namedtuple by attr in python27, & to unpack the values of a dict.
     
     - Unexpected is how good object with __slots__ is. Specially if memory instantiation costs is taken into account. 
 
     Python27:
-        - Accessing by index, list fastest, if insist on using namedtuple, by index to get around access by name
-        - Accessing by name pretty much all similar although surprisingly old style class fastest
-        - Named tuple is SUPER slow for access by name
+        - Accessing by index, list fastest, if insist on using namedtuple, by index to get around access by attr
+        - Accessing by attr pretty much all similar although surprisingly old style class fastest
+        - Named tuple is SUPER slow for access by attr
         - For unpacking tuple & list fastest, although if you really want to use namedtuple, 
-        unpacking its elements might be a way of getting around the dog slow access by name
+        unpacking its elements might be a way of getting around the dog slow access by attr
         
         Testing times mean of 5 rounds: 
         Name                                 Secs     %    
@@ -214,7 +214,7 @@ Conclusion:
     
     Python38:
         - Accessing by index, list fastest tuple & namedtuple closing the gap
-        - Accessing by name, object with slots fastest
+        - Accessing by attr, object with slots fastest
         - Unpacking, tuple fastest, list closing the gap
 
         Testing times mean of 5 rounds: 
@@ -236,7 +236,7 @@ Conclusion:
 
     Python310:
         - By index tuple fastest, namedtuple close
-        - By name, namedtuple fastest, obj with __slots__ close
+        - By attr, namedtuple fastest, obj with __slots__ close
         - Unpacking tuple fastest 
         
         Testing times mean of 5 rounds: 
@@ -258,7 +258,7 @@ Conclusion:
         
     Python312:
         - By index list fastest
-        - By name obj with __slots__
+        - By attr obj with __slots__
         - Unpacking tuple
         
         Testing times mean of 5 rounds: 

@@ -5,155 +5,149 @@ from src.z_tester import tester
 
 
 num = data.M
+name = 1
 
-class Class(object):
-    __slots__ = ('name', )
+def declare_local_1_use():
+    for _ in repeat(None, num):
+        _name = name
+        for _ in repeat(None, 1):
+            __name = name
 
-    def __init__(self):
-        self.name = 1
-
-    def declare_local_1_use(self):
-        for _ in repeat(None, num):
-            name = self.name
-            for _ in repeat(None, 1):
-                _name = name
-
-    def no_declare_local_1_use(self):
-        for _ in repeat(None, num):
-            for _ in repeat(None, 1):
-                _name = self.name
+def no_declare_local_1_use():
+    for _ in repeat(None, num):
+        for _ in repeat(None, 1):
+            __name = name
 
 
-    def declare_local_2_use(self):
-        for _ in repeat(None, num):
-            name = self.name
-            for _ in repeat(None, 2):
-                _name = name
+def declare_local_2_use():
+    for _ in repeat(None, num):
+        _name = name
+        for _ in repeat(None, 2):
+            __name = _name
 
-    def no_declare_local_2_use(self):
-        for _ in repeat(None, num):
-            for _ in repeat(None, 2):
-                _name = self.name
-
-
-    def declare_local_4_use(self):
-        for _ in repeat(None, num):
-            name = self.name
-            for _ in repeat(None, 4):
-                _name = name
-
-    def no_declare_local_4_use(self):
-        for _ in repeat(None, num):
-            for _ in repeat(None, 4):
-                _name = self.name
+def no_declare_local_2_use():
+    for _ in repeat(None, num):
+        for _ in repeat(None, 2):
+            _name = name
 
 
-    def declare_local_8_use(self):
-        for _ in repeat(None, num):
-            name = self.name
-            for _ in repeat(None, 8):
-                _name = name
+def declare_local_4_use():
+    for _ in repeat(None, num):
+        _name = name
+        for _ in repeat(None, 4):
+            __name = _name
 
-    def no_declare_local_8_use(self):
-        for _ in repeat(None, num):
-            for _ in repeat(None, 8):
-                _name = self.name
+def no_declare_local_4_use():
+    for _ in repeat(None, num):
+        for _ in repeat(None, 4):
+            _name = name
 
 
-    def declare_local_16_use(self):
-        for _ in repeat(None, num):
-            name = self.name
-            for _ in repeat(None, 16):
-                _name = name
+def declare_local_8_use():
+    for _ in repeat(None, num):
+        _name = name
+        for _ in repeat(None, 8):
+            __name = _name
 
-    def no_declare_local_16_use(self):
-        for _ in repeat(None, num):
-            for _ in repeat(None, 16):
-                _name = self.name
+def no_declare_local_8_use():
+    for _ in repeat(None, num):
+        for _ in repeat(None, 8):
+            _name = name
 
-obj = Class()
+
+def declare_local_16_use():
+    for _ in repeat(None, num):
+        _name = name
+        for _ in repeat(None, 16):
+            __name = _name
+
+def no_declare_local_16_use():
+    for _ in repeat(None, num):
+        for _ in repeat(None, 16):
+            _name = name
+
 
 tester(
     (
-        obj.declare_local_1_use,
-        obj.no_declare_local_1_use,
-        obj.declare_local_2_use,
-        obj.no_declare_local_2_use,
-        obj.declare_local_4_use,
-        obj.no_declare_local_4_use,
-        obj.declare_local_8_use,
-        obj.no_declare_local_8_use,
-        obj.declare_local_16_use,
-        obj.no_declare_local_16_use,
+        declare_local_1_use,
+        no_declare_local_1_use,
+        declare_local_2_use,
+        no_declare_local_2_use,
+        declare_local_4_use,
+        no_declare_local_4_use,
+        declare_local_8_use,
+        no_declare_local_8_use,
+        declare_local_16_use,
+        no_declare_local_16_use,
     )
 )
 
 """
 Conclusion:
-    - Normally becomes worth it at 2 usages except in Python312, there at 4
+    - Normally becomes worth it at 4 usages
     
     Python27:
-        - Becomes worth it at 2 usages
+        - Becomes worth it at 4 usages
         
         Testing times mean of 5 rounds: 
         Name                      Secs     %    
-        no_declare_local_16_use   0.3508   100  
-        no_declare_local_8_use    0.2172   62   
-        declare_local_16_use      0.2114   60   
-        declare_local_8_use       0.1528   44   
-        no_declare_local_4_use    0.1448   41   
-        declare_local_4_use       0.1192   34   
-        no_declare_local_2_use    0.111    32   
-        declare_local_2_use       0.105    30   
-        declare_local_1_use       0.0964   27   
-        no_declare_local_1_use    0.0948   27   
+        no_declare_local_16_use   0.2354   100  
+        declare_local_16_use      0.2042   87   
+        no_declare_local_8_use    0.16     68   
+        declare_local_8_use       0.1434   61   
+        no_declare_local_4_use    0.1146   49   
+        declare_local_4_use       0.1114   47   
+        declare_local_2_use       0.0972   41   
+        no_declare_local_2_use    0.0962   41   
+        declare_local_1_use       0.091    39   
+        no_declare_local_1_use    0.086    37   
     
     Python38:
         - Becomes worth it at 2 usages
         
         Testing times mean of 5 rounds: 
         Name                      Secs     %    
-        no_declare_local_16_use   0.2424   100  
-        declare_local_16_use      0.1636   67   
-        no_declare_local_8_use    0.144    59   
-        declare_local_8_use       0.1133   47   
-        no_declare_local_4_use    0.0991   41   
-        declare_local_4_use       0.0861   36   
-        no_declare_local_2_use    0.0764   32   
-        declare_local_2_use       0.0733   30   
-        declare_local_1_use       0.0671   28   
-        no_declare_local_1_use    0.0639   26   
+        no_declare_local_16_use   0.1908   100  
+        declare_local_16_use      0.162    85   
+        no_declare_local_8_use    0.1236   65   
+        declare_local_8_use       0.1091   56   
+        no_declare_local_4_use    0.0863   45   
+        declare_local_4_use       0.0844   44   
+        no_declare_local_2_use    0.0717   38   
+        declare_local_2_use       0.0707   37   
+        declare_local_1_use       0.0651   34   
+        no_declare_local_1_use    0.0617   32   
     
     Python310:
         - Becomes worth it at 2 usages
         
         Testing times mean of 5 rounds: 
         Name                      Secs     %    
-        no_declare_local_16_use   0.2856   100  
-        declare_local_16_use      0.1882   66   
-        no_declare_local_8_use    0.1688   59   
-        declare_local_8_use       0.1295   45   
-        no_declare_local_4_use    0.1099   38   
-        declare_local_4_use       0.0967   34   
-        no_declare_local_2_use    0.0847   30   
-        declare_local_2_use       0.0812   28   
-        declare_local_1_use       0.0728   25   
-        no_declare_local_1_use    0.0671   23   
+        no_declare_local_16_use   0.243    100  
+        declare_local_16_use      0.1776   73   
+        no_declare_local_8_use    0.1484   61   
+        declare_local_8_use       0.1225   50   
+        no_declare_local_4_use    0.0986   41   
+        declare_local_4_use       0.0899   37   
+        no_declare_local_2_use    0.0777   32   
+        declare_local_2_use       0.0735   30   
+        declare_local_1_use       0.0712   28   
+        no_declare_local_1_use    0.0644   26   
     
     Python312:
-        - Becomes worth it at 2 usages
+        - Becomes worth it at 4 usages
     
         Testing times mean of 5 rounds: 
         Name                      Secs     %    
-        no_declare_local_16_use   0.1849   100  
-        declare_local_16_use      0.162    88   
-        no_declare_local_8_use    0.1192   64   
-        declare_local_8_use       0.1095   59   
-        no_declare_local_4_use    0.0859   46   
-        declare_local_4_use       0.0835   45   
-        declare_local_2_use       0.0729   39   
-        no_declare_local_2_use    0.0711   38   
-        declare_local_1_use       0.0654   35   
-        no_declare_local_1_use    0.0624   34   
+        no_declare_local_16_use   0.1894   100  
+        declare_local_16_use      0.1622   86   
+        no_declare_local_8_use    0.1209   64   
+        declare_local_8_use       0.1099   57   
+        no_declare_local_4_use    0.0877   46   
+        declare_local_4_use       0.0835   44   
+        no_declare_local_2_use    0.0717   38   
+        declare_local_2_use       0.0711   38   
+        declare_local_1_use       0.0659   35   
+        no_declare_local_1_use    0.0624   33   
 """
 
