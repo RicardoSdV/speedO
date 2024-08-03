@@ -43,6 +43,14 @@ def instantiate_object_slots():
 
     objs = [ClassSlots(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
 
+def instantiate_object_slots_comma_init():
+    class ClassWithSlotsCommaInit(object):
+        __slots__ = ('a', 'b', 'c', 'd', 'e', 'f')
+        def __init__(self, _a, _b, _c, _d, _e, _f):
+            self.a, self.b, self.c, self.d, self.e, self.f = 1, 2, 3, 4, 5, 6
+
+    objs = [ClassWithSlotsCommaInit(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
+
 def instantiate_object_no_slots():
     class ClassNoSlots(object):
         def __init__(self, _a, _b, _c, _d, _e, _f):
@@ -77,6 +85,7 @@ if __name__ == '__main__':
             instantiate_lists,
             instantiate_object_slots,
             instantiate_object_no_slots,
+            instantiate_object_slots_comma_init,
             # instantiate_object_old_style,
         ),
     )
@@ -88,6 +97,7 @@ if __name__ == '__main__':
             instantiate_lists,
             instantiate_object_slots,
             instantiate_object_no_slots,
+            instantiate_object_slots_comma_init,
             # instantiate_object_old_style,
         ),
         testing_what='memories'

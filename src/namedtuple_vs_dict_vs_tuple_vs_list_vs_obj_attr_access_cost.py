@@ -32,6 +32,11 @@ class ClassWithSlots(object):
         self.e = 5
         self.f = 6
 
+class ClassWithSlotsCommaDec(object):
+    __slots__ = ('a', 'b', 'c', 'd', 'e', 'f')
+    def __init__(self):
+        self.a, self.b, self.c, self.d, self.e, self.f = 1, 2, 3, 4, 5, 6
+
 class ClassNoSlots(object):
     def __init__(self):
         self.a = 1
@@ -51,6 +56,7 @@ class OldStyleClass:
         self.f = 6
 
 obj_with_slots = ClassWithSlots()
+obj_with_slots_comma_dec = ClassWithSlots()
 obj_no_slots = ClassNoSlots()
 obj_old = OldStyleClass()
 
