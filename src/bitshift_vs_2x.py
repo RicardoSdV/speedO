@@ -23,6 +23,8 @@ tester(
 """
 Conclusion:
     - Yes, bit shifting is just as slow :(
+    
+    - Also python38 was the sweet spot for multiplying by 2
 
     Python27:
         Testing times mean of 5 rounds: 
@@ -45,6 +47,6 @@ Conclusion:
     Python312:
         Testing times mean of 5 rounds: 
         Name          Secs     %    
-        mult_by_two   0.7173   100  
-        bit_shift     0.7118   99   
+        bit_shift     0.674    100  
+        mult_by_two   0.6682   99   
 """

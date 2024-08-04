@@ -1,5 +1,6 @@
 from collections import deque
 from itertools import repeat
+from random import shuffle
 from time import time
 
 
@@ -56,6 +57,9 @@ class Data:
     def M10_ints(self): return  list(self.M10_range)
     @property
     def M100_ints(self): return list(self.M100_range)
+
+    @property
+    def M10_shuffled_ints(self): _list = self.M10_ints; shuffle(_list); return _list
 
     @property
     def ptrn_chars_tup(self): return    ('A', 'A', 'A', 'A', 'A', 'B', 'A', 'A', 'B', 'A', 'A', 'B', 'B', 'B', 'B', 'B')
