@@ -194,11 +194,11 @@ Conclusion:
     - Unexpected is how good object with __slots__ is. Specially if memory instantiation costs is taken into account. 
 
     Python27:
-        - Accessing by index, list fastest, if insist on using namedtuple, by index to get around access by attr
-        - Accessing by attr pretty much all similar although surprisingly old style class fastest
-        - Named tuple is SUPER slow for access by attr
-        - For unpacking tuple & list fastest, although if you really want to use namedtuple, 
-        unpacking its elements might be a way of getting around the dog slow access by attr
+        - Accessing by index, list fastest.
+        - Accessing by attr name pretty much all similar although surprisingly old style class fastest
+        - Named tuple is slow for access by attr (probably because implemented with properties)
+        - For unpacking tuple & list fastest. access_dict_by_values_unpack does not make sense in python27 
+        since dict unordered
         
         Testing times mean of 5 rounds: 
         Name                                 Secs     %    

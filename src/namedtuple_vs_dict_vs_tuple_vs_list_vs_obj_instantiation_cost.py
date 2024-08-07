@@ -116,7 +116,7 @@ Conclusion:
     22     216        56 + 3344   216        56 + 408     
     43     384        56 + 3344   384        56 + 752
     
-    - But also to be fair, the size of __dict__ specially in python27 is crazy big
+    - But also to be fair, the size of __dict__ specially in python27 is big
 
     Python27:
         - Most time & memory efficient is tuple
