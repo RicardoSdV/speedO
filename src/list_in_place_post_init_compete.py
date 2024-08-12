@@ -3,7 +3,7 @@ Compare the performance of IPLs when they don't need to grow
 
 Work in progress
 """
-
+import sys
 from itertools import repeat, islice
 from random import choice
 from string import printable
@@ -21,57 +21,58 @@ rep_cnt = data.k10
 lines1 = ('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')
 lines2 = tuple(reversed(lines1))
 
+if sys.version.startswith('3'):
+    class IPL:
+        """ In Place List """
+        __slots__ = ('_idx', '_list', '_len_list')
 
-class IPL:
-    """ In Place List """
-    __slots__ = ('_idx', '_list', '_len_list')
+        def __init__(self):
+            self._idx = -1
+            self._list = []
+            self._len_list = 0  # Yes, faster than len()
 
-    def __init__(self):
-        self._idx = -1
-        self._list = []
-        self._len_list = 0  # Yes, faster than len()
-
-    def append(self, element):
-        self._idx += 1
-        try:
-            self._list[self._idx] = element
-        except IndexError:
-            self._list.append(element)
-            self._len_list += 1
-
-    def reset(self):
-        yield from islice(self._list, self._idx+1)
-        self._idx = -1
-
-class IPL2:
-    """ In Place List """
-    __slots__ = ('_idx', '_list', '_len_list', '_append')
-
-    def __init__(self):
-        self._idx = -1
-        self._list = []
-        self._len_list = 0  # Yes, faster than len()
-        self._append = self._append_gen()
-
-    def _append_gen(self):
-        for i in range(self._len_list):
-            element = yield
-            self._list[i] = element
-            yield i
-
-    def append(self, element):
-        try:
-            next(self._append)
-            self._idx = self._append.send(element)
-        except StopIteration:
-            self._list.append(element)
-            self._len_list += 1
+        def append(self, element):
             self._idx += 1
+            try:
+                self._list[self._idx] = element
+            except IndexError:
+                self._list.append(element)
+                self._len_list += 1
+
+        def reset(self):
+            yield from islice(self._list, self._idx+1)
+            self._idx = -1
+
+    class IPL2:
+        """ In Place List """
+        __slots__ = ('_idx', '_list', '_len_list', '_append')
+
+        def __init__(self):
+            self._idx = -1
+            self._list = []
+            self._len_list = 0  # Yes, faster than len()
             self._append = self._append_gen()
 
-    def reset(self):
-        yield from islice(self._list, self._idx+1)
+        def _append_gen(self):
+            for i in range(self._len_list):
+                element = yield
+                self._list[i] = element
+                yield i
 
+        def append(self, element):
+            try:
+                next(self._append)
+                self._idx = self._append.send(element)
+            except StopIteration:
+                self._list.append(element)
+                self._len_list += 1
+                self._idx += 1
+                self._append = self._append_gen()
+
+        def reset(self):
+            yield from islice(self._list, self._idx+1)
+else:
+    pass
 
 def run_ipl():
     ipl = IPL()
