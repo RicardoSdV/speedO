@@ -117,7 +117,7 @@ tester(
 Conclusion:
     This test was specially inprecise, bc the hardware and multiple processes
     going on at the same time but there are two main slow down factors,
-    using an in-house partial and kwargs. And the difference is not small
+    using an in-house partial and kwargs. And the difference is not small.
 
     Python27:
         Name                                         Secs     %    
