@@ -3,7 +3,7 @@ from itertools import repeat
 from src.z_data import data
 from src.z_tester import tester
 
-num = data.M100
+num = data.M10
 
 def no_declare():
 
@@ -28,7 +28,7 @@ def do_unpack_declare():
     args_list = [0, True]
 
     for _ in repeat(None, num):
-        a1, a2 = args_list, args_list
+        a1, a2 = args_list
         if a1 and a2:
             continue
 
@@ -60,25 +60,25 @@ Conclusion:
     Python27:
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        do_comma_declare    2.536    100  
-        do_declare          2.3236   92   
-        do_unpack_declare   2.1572   85   
-        no_declare          1.3516   53   
+        do_comma_declare    0.2778   100  
+        do_declare          0.2508   90   
+        do_unpack_declare   0.1494   54   
+        no_declare          0.1446   52   
         
     Python38:
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        do_declare          2.74     100  
-        do_comma_declare    2.7226   99   
-        do_unpack_declare   2.1679   79   
-        no_declare          1.2844   47   
+        do_comma_declare    0.1935   100  
+        do_declare          0.1883   97   
+        do_unpack_declare   0.1151   59   
+        no_declare          0.0988   51   
         
     Python312:
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        do_declare          1.7861   100  
-        do_comma_declare    1.6325   91   
-        do_unpack_declare   1.4625   82   
-        no_declare          1.0809   61  
+        do_declare          0.1889   100  
+        do_comma_declare    0.1735   92   
+        do_unpack_declare   0.1453   77   
+        no_declare          0.1134   60   
 
 """

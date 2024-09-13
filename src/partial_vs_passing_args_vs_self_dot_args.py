@@ -1,6 +1,6 @@
 """ If a method uses many other methods within the class & is called very often
 would there be efficiency gains to instead of doing self.other_meths() to call
-pass them to the method in the form of a partial?? """
+pass them to the method in the form of a partial? """
 from functools import partial
 from itertools import repeat
 
