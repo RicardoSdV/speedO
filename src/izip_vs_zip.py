@@ -74,6 +74,7 @@ def izipTuple16():
 
 
 class Class(object):
+    __slots__ = ()
     from itertools import izip as __izip
 
     @staticmethod

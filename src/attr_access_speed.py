@@ -134,8 +134,8 @@ tester(
 """
 Conclusion:
     - In general if you can make something an instance attr is going to
-    be faster in python >= 310, although, not memory efficient if class 
-    is going to be instantiated many times
+    be faster in python >= 310, although, might be some hidden costs to 
+    passing "self" around redundantly, must investigate how that works
     
     - What might not be getting captured by this test is, for example, 
     if you have three or four methods that call each-other, and they
