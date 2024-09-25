@@ -27,6 +27,18 @@ Conclusion:
     Python27:
         - Iteritems just always better
         
+        Average of 3 rounds, len(outer) = 1 000 000, len(inner) = 2: 
+
+        Name                  Secs     %    
+        iter_with_items       0.117    100  
+        iter_with_iteritems   0.0827   71   
+        
+        Average of 3 rounds, len(outer) = 1 000 000, len(inner) = 5: 
+        
+        Name                  Secs     %    
+        iter_with_items       0.18     100  
+        iter_with_iteritems   0.1303   72   
+        
         Average of 3 rounds, len(outer_list) = 1 000 000, len(inner_list) = 10: 
 
         Name                  Secs    %    
