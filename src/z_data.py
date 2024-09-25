@@ -1,28 +1,41 @@
 from collections import deque
-from itertools import repeat
+from itertools import repeat, product, islice
 from random import shuffle
 from time import time
 
 
+def dict_keys(num):
+    posChars = ('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')
+
+    def key_generator():
+        # Gen infinite unique keys
+        length = 1
+        while True:
+            for combo in product(posChars, repeat=length):
+                yield ''.join(combo)
+            length += 1
+
+    return islice(key_generator(), num)
+
 class Data:
     @property
-    def ten(self): return  10
+    def ten(self):  return 10
     @property
-    def hun(self): return  100
+    def hun(self):  return 100
     @property
-    def k(self): return    1000
+    def k(self):    return 1000
     @property
-    def k10(self): return  10000
+    def k10(self):  return 10000
     @property
     def k100(self): return 100000
     @property
-    def M(self): return    1000000
+    def M(self):    return 1000000
     @property
-    def M10(self): return  10000000
+    def M10(self):  return 10000000
     @property
     def M100(self): return 100000000
     @property
-    def B(self): return    1000000000
+    def B(self):    return 1000000000
 
     @property
     def ten_range(self): return  range(self.ten)
@@ -59,6 +72,23 @@ class Data:
     def M100_ints(self): return list(self.M100_range)
 
     @property
+    def ten_item_dict(self):  return {k: v for k, v in zip(dict_keys(self.ten) , self.ten_range)}
+    @property
+    def hun_item_dict(self):  return {k: v for k, v in zip(dict_keys(self.hun) , self.hun_range)}
+    @property
+    def k_item_dict(self):    return {k: v for k, v in zip(dict_keys(self.k)   , self.k_range)}
+    @property
+    def k10_item_dict(self):  return {k: v for k, v in zip(dict_keys(self.k10) , self.k10_range)}
+    @property
+    def k100_item_dict(self): return {k: v for k, v in zip(dict_keys(self.k100), self.k100_range)}
+    @property
+    def M_item_dict(self):    return {k: v for k, v in zip(dict_keys(self.M)   , self.M_range)}
+    @property
+    def M10_item_dict(self):  return {k: v for k, v in zip(dict_keys(self.M10) , self.M10_range)}
+    @property
+    def M100_item_dict(self): return {k: v for k, v in zip(dict_keys(self.M100), self.M100_range)}
+
+    @property
     def M10_shuffled_ints(self): _list = self.M10_ints; shuffle(_list); return _list
 
     @property
@@ -80,6 +110,7 @@ class Data:
     @property
     def k__hun_chars(self): return [self.hun_chars_str for _ in repeat(None, self.k)]
 
+    ## Slower 3d list elements
     @property
     def M10__ten_ints(self): return [self.ten_ints for _ in repeat(None, self.M10)]
     @property
@@ -95,6 +126,7 @@ class Data:
     @property
     def ten__M10_ints(self): return [self.M10_ints for _ in repeat(None, self.ten)]
 
+    # Faster 3d list elements
     @property
     def M__ten_ints(self): return    [self.ten_ints for _ in repeat(None, self.M)]
     @property
@@ -108,6 +140,7 @@ class Data:
     @property
     def ten__M_ints(self): return    [self.M_ints for _ in repeat(None, self.ten)]
 
+    # Super fast 3d list elements
     @property
     def k100__ten_ints(self): return [self.ten_ints for _ in repeat(None, self.k100)]
     @property
@@ -118,6 +151,20 @@ class Data:
     def hun__k10_ints(self): return  [self.k10_ints for _ in repeat(None, self.hun)]
     @property
     def ten__k100_ints(self): return [self.k100_ints for _ in repeat(None, self.ten)]
+
+    # Faster 3d list of dicts elements
+    @property
+    def M__ten_item_dict(self):    return [self.ten_item_dict  for _ in repeat(None, self.M)]
+    @property
+    def k100__hun_item_dict(self): return [self.hun_item_dict  for _ in repeat(None, self.k100)]
+    @property
+    def k10__k_item_dict(self):    return [self.k_item_dict    for _ in repeat(None, self.k10)]
+    @property
+    def k__k10_item_dict(self):    return [self.k10_item_dict  for _ in repeat(None, self.k)]
+    @property
+    def hun__k100_item_dict(self): return [self.k100_item_dict for _ in repeat(None, self.hun)]
+    @property
+    def ten__M_item_dict(self):    return [self.M_item_dict    for _ in repeat(None, self.ten)]
 
     @property
     def M__ten_ints_deque(self): return    deque(self.M__ten_ints)
@@ -141,6 +188,10 @@ class Data:
     @property
     def super_fast_3d_list(self):
         return self.k100__ten_ints, self.k10__hun_ints, self.k__k_ints, self.hun__k10_ints, self.ten__k100_ints
+
+    @property
+    def faster_3d_list_of_dicts(self):  # returns list[list[dict[str, int]]]
+        return self.M__ten_item_dict, self.k100__hun_item_dict, self.k10__k_item_dict, self.k__k10_item_dict, self.hun__k100_item_dict, self.ten__M_item_dict
 
     @property
     def faster_3d_deque(self):

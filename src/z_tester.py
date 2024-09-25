@@ -18,7 +18,7 @@ def tester_2d(callables, list_3d=None, return_time=False, testing_what='times'):
     print('Testing {}:\n'.format(testing_what))
     for list_2d in list_3d:
         len_outer_list, len_inner_list = get_lens_2d(list_2d)
-        print('Average of {} rounds, len(outer_list) = {}, len(inner_list) = {}: '.format(
+        print('Average of {} rounds, len(outer) = {}, len(inner) = {}: '.format(
             num_repeats, len_outer_list, len_inner_list)
         )
 
