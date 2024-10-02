@@ -1,4 +1,4 @@
-import time
+from time import time
 
 from memory_profiler import memory_usage
 
@@ -51,16 +51,16 @@ def call_callables_get_times(callables, arg, return_time):
             if return_time:
                 elapsed = func(arg)
             else:
-                start_time = time.time()
+                start_time = time()
                 func(arg)
-                elapsed = time.time() - start_time
+                elapsed = time() - start_time
         else:
             if return_time:
                 elapsed = func()
             else:
-                start_time = time.time()
+                start_time = time()
                 func()
-                elapsed = time.time() - start_time
+                elapsed = time() - start_time
 
         times.append(elapsed)
 

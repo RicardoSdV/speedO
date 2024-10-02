@@ -8,6 +8,7 @@ build/
 venv27/
 venv312/
 venv38/
+venv310/
 
 *.pyc
 *.pyd

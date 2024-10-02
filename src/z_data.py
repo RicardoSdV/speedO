@@ -1,6 +1,6 @@
 from collections import deque
 from itertools import repeat
-from random import shuffle
+from random import shuffle, randint
 from sys import version
 
 if version.startswith('2'):
@@ -25,7 +25,34 @@ def dict_keys(num):
     return islice(key_generator(), num)
 
 
+def convert_lists_3d_in_place(lists, converter):
+    """ Apply the converter function to the innermost list """
+    for list_1 in lists:
+        for i, list_2 in enumerate(list_1):
+            list_1[i] = converter(list_2)
+    return lists
+
+def convert_lists_2d_in_place(lists, converter):
+    """ Apply the converter function to the innermost list """
+    for i, _list in enumerate(lists):
+        lists[i] = converter(_list)
+    return lists
+
+def reverse_inner_of_3d_in_place(list3d):
+    for outer in list3d:
+        for inner in outer:
+            inner.reverse()
+
+def inner_to_iter_of_2d(outer):
+    result = []
+    for inner in outer:
+        result.append(iter(inner))
+    return result
+
+
 class Data:
+    @property
+    def zero(self): return 0
     @property
     def two (self): return 2
     @property
@@ -71,6 +98,10 @@ class Data:
     def M100_range(self): return range(self.M100)
 
     @property
+    def two_ints (self): return list(self.two_range)
+    @property
+    def five_ints(self): return list(self.five_range)
+    @property
     def ten_ints (self): return list(self.ten_range)
     @property
     def hun_ints (self): return list(self.hun_range)
@@ -86,6 +117,34 @@ class Data:
     def M10_ints (self): return list(self.M10_range)
     @property
     def M100_ints(self): return list(self.M100_range)
+
+    @property
+    def two_rnd_ints(self): return [randint(self.zero, self.two-1) for _ in repeat(None, self.two)]
+    @property
+    def ten_rnd_ints(self): return [randint(self.zero, self.ten-1) for _ in repeat(None, self.ten)]
+    @property
+    def hun_rnd_ints(self): return [randint(self.zero, self.hun-1) for _ in repeat(None, self.hun)]
+
+    @property
+    def two_Nones (self): return [None] * self.two
+    @property
+    def five_Nones(self): return [None] * self.five
+    @property
+    def ten_Nones (self): return [None] * self.ten
+    @property
+    def hun_Nones (self): return [None] * self.hun
+    @property
+    def k_Nones   (self): return [None] * self.k
+    @property
+    def k10_Nones (self): return [None] * self.k10
+    @property
+    def k100_Nones(self): return [None] * self.k100
+    @property
+    def M_Nones   (self): return [None] * self.M
+    @property
+    def M10_Nones (self): return [None] * self.M10
+    @property
+    def M100_Nones(self): return [None] * self.M100
 
     @property
     def two_item_dict (self): return {k: v for k, v in verizip(dict_keys(self.two) , self.two_range)}
@@ -162,15 +221,18 @@ class Data:
 
     # Super fast 3d list elements
     @property
-    def k100__ten_ints(self): return [self.ten_ints for _ in repeat(None, self.k100)]
+    def k100__ten_ints(self): return [self.ten_ints  for _ in repeat(None, self.k100)]
     @property
-    def k10__hun_ints(self): return  [self.hun_ints for _ in repeat(None, self.k10)]
+    def k10__hun_ints (self): return [self.hun_ints  for _ in repeat(None, self.k10)]
     @property
-    def k__k_ints(self): return      [self.k_ints for _ in repeat(None, self.k)]
+    def k__k_ints     (self): return [self.k_ints    for _ in repeat(None, self.k)]
     @property
-    def hun__k10_ints(self): return  [self.k10_ints for _ in repeat(None, self.hun)]
+    def hun__k10_ints (self): return [self.k10_ints  for _ in repeat(None, self.hun)]
     @property
     def ten__k100_ints(self): return [self.k100_ints for _ in repeat(None, self.ten)]
+
+    @property
+    def k100__two_ints(self): return [self.two_ints for _ in repeat(None, self.k100)]
 
     # Faster 3d list of dicts elements
     @property
@@ -189,6 +251,15 @@ class Data:
     def hun__k100_item_dict(self): return [self.k100_item_dict for _ in repeat(None, self.hun)]
     @property
     def ten__M_item_dict   (self): return [self.M_item_dict    for _ in repeat(None, self.ten)]
+
+    @property
+    def k100__two_rnd_ints(self): return [self.two_rnd_ints for _ in repeat(None, self.k100)]
+    @property
+    def k100__ten_rnd_ints(self): return [self.ten_rnd_ints for _ in repeat(None, self.k100)]
+    @property
+    def k100__hun_rnd_ints(self): return [self.hun_rnd_ints for _ in repeat(None, self.k100)]
+    @property
+    def k10__hun_rnd_ints (self): return [self.hun_rnd_ints for _ in repeat(None, self.k10)]
 
     @property
     def M__ten_ints_deque   (self): return deque(self.M__ten_ints)
@@ -214,8 +285,32 @@ class Data:
         return self.k100__ten_ints, self.k10__hun_ints, self.k__k_ints, self.hun__k10_ints, self.ten__k100_ints
 
     @property
-    def faster_3d_list_of_dicts(self):  # returns list[list[dict[str, int]]]
+    def faster_3d_list_rev_inner(self):
+        _list = self.faster_3d_list
+        reverse_inner_of_3d_in_place(_list)
+        return _list
+
+    @property
+    def faster_3d_list_of_dicts(self):  # returns tuple[list[dict[str, int]]]
         return self.M__two_item_dict, self.M__five_item_dict, self.M__ten_item_dict, self.k100__hun_item_dict, self.k10__k_item_dict, self.k__k10_item_dict, self.hun__k100_item_dict, self.ten__M_item_dict
+
+    @property
+    def faster_3d_list_of_sets(self):  # returns tuple[list[set[int]]]
+        faster_3d_list = self.faster_3d_list
+        convert_lists_3d_in_place(faster_3d_list, set)
+        return faster_3d_list
+
+    @property
+    def faster_3d_list_of_deque(self):  # returns tuple[list[deque[int]]]
+        faster_3d_list = self.faster_3d_list
+        convert_lists_3d_in_place(faster_3d_list, deque)
+        return faster_3d_list
+
+    @property
+    def faster_3d_list_of_tuple(self):  # returns tuple[list[tuple[int]]]
+        faster_3d_list = self.faster_3d_list
+        convert_lists_3d_in_place(faster_3d_list, tuple)
+        return faster_3d_list
 
     @property
     def faster_3d_deque(self):
