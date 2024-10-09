@@ -67,7 +67,8 @@ tester(
 
 """
 Conclusion:
-    - dict and sort keys best choice
+    - dict and sort keys best choice, although lets say you need to iterate over the sorted 
+    kv pairs multiple times it might be worth it in python27-38 to keep them in a list of tuples
     
     Python27:
         Testing times mean of 5 rounds: 
