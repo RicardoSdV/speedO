@@ -14,62 +14,100 @@ class Class(object):
 
     def declare_local_1_use(self):
         for _ in repeat(None, num):
-            name = self.attr
-            for _ in repeat(None, 1):
-                _name = name
+            _attr = self.attr
+            name = _attr
 
     def no_declare_local_1_use(self):
         for _ in repeat(None, num):
-            for _ in repeat(None, 1):
-                _name = self.attr
-
+            name = self.attr
 
     def declare_local_2_use(self):
         for _ in repeat(None, num):
-            name = self.attr
-            for _ in repeat(None, 2):
-                _name = name
+            _attr = self.attr
+            name1 = _attr
+            name2 = _attr
 
     def no_declare_local_2_use(self):
         for _ in repeat(None, num):
-            for _ in repeat(None, 2):
-                _name = self.attr
-
+            name1 = self.attr
+            name2 = self.attr
 
     def declare_local_4_use(self):
         for _ in repeat(None, num):
-            name = self.attr
-            for _ in repeat(None, 4):
-                _name = name
+            _attr = self.attr
+            name1 = _attr
+            name2 = _attr
+            name3 = _attr
+            name4 = _attr
 
     def no_declare_local_4_use(self):
         for _ in repeat(None, num):
-            for _ in repeat(None, 4):
-                _name = self.attr
-
+            name1 = self.attr
+            name2 = self.attr
+            name3 = self.attr
+            name4 = self.attr
 
     def declare_local_8_use(self):
         for _ in repeat(None, num):
-            name = self.attr
-            for _ in repeat(None, 8):
-                _name = name
+            _attr = self.attr
+            name1 = _attr
+            name2 = _attr
+            name3 = _attr
+            name4 = _attr
+            name5 = _attr
+            name6 = _attr
+            name7 = _attr
+            name8 = _attr
 
     def no_declare_local_8_use(self):
         for _ in repeat(None, num):
-            for _ in repeat(None, 8):
-                _name = self.attr
-
+            name1 = self.attr
+            name2 = self.attr
+            name3 = self.attr
+            name4 = self.attr
+            name5 = self.attr
+            name6 = self.attr
+            name7 = self.attr
+            name8 = self.attr
 
     def declare_local_16_use(self):
         for _ in repeat(None, num):
-            name = self.attr
-            for _ in repeat(None, 16):
-                _name = name
+            _attr = self.attr
+            name1 = _attr
+            name2 = _attr
+            name3 = _attr
+            name4 = _attr
+            name5 = _attr
+            name6 = _attr
+            name7 = _attr
+            name8 = _attr
+            name9 = _attr
+            name10 = _attr
+            name11 = _attr
+            name12 = _attr
+            name13 = _attr
+            name14 = _attr
+            name15 = _attr
+            name16 = _attr
 
     def no_declare_local_16_use(self):
         for _ in repeat(None, num):
-            for _ in repeat(None, 16):
-                _name = self.attr
+            name1 = self.attr
+            name2 = self.attr
+            name3 = self.attr
+            name4 = self.attr
+            name5 = self.attr
+            name6 = self.attr
+            name7 = self.attr
+            name8 = self.attr
+            name9 = self.attr
+            name10 = self.attr
+            name11 = self.attr
+            name12 = self.attr
+            name13 = self.attr
+            name14 = self.attr
+            name15 = self.attr
+            name16 = self.attr
 
 obj = Class()
 
@@ -77,15 +115,36 @@ tester(
     (
         obj.declare_local_1_use,
         obj.no_declare_local_1_use,
+    ),
+    print_rounds = False,
+)
+tester(
+    (
         obj.declare_local_2_use,
         obj.no_declare_local_2_use,
+    ),
+    print_rounds = False,
+)
+tester(
+    (
         obj.declare_local_4_use,
         obj.no_declare_local_4_use,
+    ),
+    print_rounds = False,
+)
+tester(
+    (
         obj.declare_local_8_use,
         obj.no_declare_local_8_use,
+    ),
+    print_rounds=False,
+)
+tester(
+    (
         obj.declare_local_16_use,
         obj.no_declare_local_16_use,
-    )
+    ),
+    print_rounds=False,
 )
 
 """
@@ -93,70 +152,81 @@ Conclusion:
     - Normally becomes worth it at 2 usages except in Python312, there at 4
     
     - To be fair memory & deletion speeds are not being measured, im sure there are
-    some hidden costs to declaring locals all over the place   
+    some hidden costs to declaring locals all over the place
+    
+    - Somehow theres is a diminishing improvement the more usages in later versions
     
     Python27:
-        - Becomes worth it at 2 usages
-        
-        Testing times mean of 5 rounds: 
-        Name                      Secs     %    
-        no_declare_local_16_use   0.3508   100  
-        no_declare_local_8_use    0.2172   62   
-        declare_local_16_use      0.2114   60   
-        declare_local_8_use       0.1528   44   
-        no_declare_local_4_use    0.1448   41   
-        declare_local_4_use       0.1192   34   
-        no_declare_local_2_use    0.111    32   
-        declare_local_2_use       0.105    30   
-        declare_local_1_use       0.0964   27   
-        no_declare_local_1_use    0.0948   27   
+        - Becomes faster at 2 usages
+    Name                     Secs     %   
+    declare_local_1_use      0.018    100  
+    no_declare_local_1_use   0.0156   87   
+    
+    no_declare_local_2_use   0.0266   100  
+    declare_local_2_use      0.0204   77   
+    
+    no_declare_local_4_use   0.0492   100  
+    declare_local_4_use      0.0258   52   
+    
+    no_declare_local_8_use   0.108    100  
+    declare_local_8_use      0.0428   40   
+    
+    no_declare_local_16_use   0.1942   100  
+    declare_local_16_use      0.0618   32   
     
     Python38:
-        - Becomes worth it at 2 usages
-        
-        Testing times mean of 5 rounds: 
-        Name                      Secs     %    
-        no_declare_local_16_use   0.2424   100  
-        declare_local_16_use      0.1636   67   
-        no_declare_local_8_use    0.144    59   
-        declare_local_8_use       0.1133   47   
-        no_declare_local_4_use    0.0991   41   
-        declare_local_4_use       0.0861   36   
-        no_declare_local_2_use    0.0764   32   
-        declare_local_2_use       0.0733   30   
-        declare_local_1_use       0.0671   28   
-        no_declare_local_1_use    0.0639   26   
+        - Becomes faster at 2 usages
+    Name                     Secs     %    
+    declare_local_1_use      0.0132   100  
+    no_declare_local_1_use   0.0104   79   
+    
+    no_declare_local_2_use   0.0179   100  
+    declare_local_2_use      0.0161   90   
+    
+    no_declare_local_4_use   0.0319   100  
+    declare_local_4_use      0.0204   64   
+    
+    no_declare_local_8_use   0.0614   100  
+    declare_local_8_use      0.0304   50   
+
+    no_declare_local_16_use   0.1213   100  
+    declare_local_16_use      0.0566   47   
     
     Python310:
         - Becomes worth it at 2 usages
-        
-        Testing times mean of 5 rounds: 
-        Name                      Secs     %    
-        no_declare_local_16_use   0.2856   100  
-        declare_local_16_use      0.1882   66   
-        no_declare_local_8_use    0.1688   59   
-        declare_local_8_use       0.1295   45   
-        no_declare_local_4_use    0.1099   38   
-        declare_local_4_use       0.0967   34   
-        no_declare_local_2_use    0.0847   30   
-        declare_local_2_use       0.0812   28   
-        declare_local_1_use       0.0728   25   
-        no_declare_local_1_use    0.0671   23   
+    Name                     Secs     %    
+    declare_local_1_use      0.015    100  
+    no_declare_local_1_use   0.0124   83   
+    
+    no_declare_local_2_use   0.0212   100  
+    declare_local_2_use      0.0177   84   
+    
+    no_declare_local_4_use   0.0393   100  
+    declare_local_4_use      0.0223   56   
+    
+    no_declare_local_8_use   0.0757   100  
+    declare_local_8_use      0.0404   53   
+    
+    no_declare_local_16_use   0.1578   100  
+    declare_local_16_use      0.0606   38   
     
     Python312:
         - Becomes worth it at 4 usages
+    Name                     Secs     %    
+    declare_local_1_use      0.0096   100  
+    no_declare_local_1_use   0.0074   77   
     
-        Testing times mean of 5 rounds: 
-        Name                      Secs     %    
-        no_declare_local_16_use   0.1849   100  
-        declare_local_16_use      0.162    88   
-        no_declare_local_8_use    0.1192   64   
-        declare_local_8_use       0.1095   59   
-        no_declare_local_4_use    0.0859   46   
-        declare_local_4_use       0.0835   45   
-        declare_local_2_use       0.0729   39   
-        no_declare_local_2_use    0.0711   38   
-        declare_local_1_use       0.0654   35   
-        no_declare_local_1_use    0.0624   34   
+    declare_local_2_use      0.0113   100  
+    no_declare_local_2_use   0.0111   99   
+    
+    no_declare_local_4_use   0.0186   100  
+    declare_local_4_use      0.014    75   
+    
+    no_declare_local_8_use   0.0363   100  
+    declare_local_8_use      0.0209   57   
+    
+    no_declare_local_16_use   0.0806   100  
+    declare_local_16_use      0.0371   46   
+
 """
 

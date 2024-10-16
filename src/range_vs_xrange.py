@@ -63,10 +63,10 @@ Conclusion:
     
     
     Testing times mean of 5 rounds: 
-    Name              Secs     %    
-    _RevRange         0.1962   100  
-    _Reversedxrange   0.1348   69   
-    _RevXrange        0.1166   59   
+    Name          Secs     %    
+    _RevRange     0.1956   100  
+    _RevXrange2   0.1474   75   
+    _InvXrange    0.1146   59   
 
 """
 
