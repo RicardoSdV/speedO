@@ -73,15 +73,15 @@ class Class(object):
     def declare_local_16_use(self):
         for _ in repeat(None, num):
             _attr = self.attr
-            name1 = _attr
-            name2 = _attr
-            name3 = _attr
-            name4 = _attr
-            name5 = _attr
-            name6 = _attr
-            name7 = _attr
-            name8 = _attr
-            name9 = _attr
+            name1  = _attr
+            name2  = _attr
+            name3  = _attr
+            name4  = _attr
+            name5  = _attr
+            name6  = _attr
+            name7  = _attr
+            name8  = _attr
+            name9  = _attr
             name10 = _attr
             name11 = _attr
             name12 = _attr
@@ -92,15 +92,15 @@ class Class(object):
 
     def no_declare_local_16_use(self):
         for _ in repeat(None, num):
-            name1 = self.attr
-            name2 = self.attr
-            name3 = self.attr
-            name4 = self.attr
-            name5 = self.attr
-            name6 = self.attr
-            name7 = self.attr
-            name8 = self.attr
-            name9 = self.attr
+            name1  = self.attr
+            name2  = self.attr
+            name3  = self.attr
+            name4  = self.attr
+            name5  = self.attr
+            name6  = self.attr
+            name7  = self.attr
+            name8  = self.attr
+            name9  = self.attr
             name10 = self.attr
             name11 = self.attr
             name12 = self.attr
