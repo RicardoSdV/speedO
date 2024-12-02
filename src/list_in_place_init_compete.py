@@ -225,7 +225,7 @@ Conclusion:
         
         - Also the strategy of doubling the list size has a problem,
         the relatively large number of doublings necessary to get the
-        list to a relatively . 
+        list to a relatively large size. 
         
         - Therefore, the best approach is obviously to use a fixed list
         and know ahead of time the number of elements it will hold, however

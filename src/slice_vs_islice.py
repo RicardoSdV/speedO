@@ -9,6 +9,7 @@ def _slice(outer):
         for el in inner[half_len_inner:]:
             continue
 
+
 def _islice(outer):
     half_len_inner = len(outer[0])//2
     for inner in outer:
@@ -23,8 +24,8 @@ tester_2d(
 
 """
 Conclusion:
-    - islice becomes worth it at about 1000 elements, although some tests 
-    need to be done on how the size of the slice affects this.
+    - islice becomes worth it at abut 1000 elements, although some tests 
+    need to be done on how the size of the slice affects this
 
     Python27:
         Average of 3 rounds, len(outer) = 1 000 000, len(inner) = 10: 
