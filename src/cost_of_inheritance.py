@@ -11,6 +11,14 @@ class Level1(Level0): pass
 
 class Level2(Level1): pass
 
+class Level3(Level2): pass
+
+class Level4(Level3): pass
+
+class Level5(Level4): pass
+
+class Level6(Level5): pass
+
 
 num = data.M10
 
@@ -26,6 +34,22 @@ def inst_level2():
     for _ in repeat(None, num):
         obj = Level2()
 
+def inst_level3():
+    for _ in repeat(None, num):
+        obj = Level3()
+
+def inst_level4():
+    for _ in repeat(None, num):
+        obj = Level4()
+
+def inst_level5():
+    for _ in repeat(None, num):
+        obj = Level5()
+
+def inst_level6():
+    for _ in repeat(None, num):
+        obj = Level6()
+
 
 if __name__ == '__main__':
     tester(
@@ -33,6 +57,10 @@ if __name__ == '__main__':
             inst_level0,
             inst_level1,
             inst_level2,
+            inst_level3,
+            inst_level4,
+            inst_level5,
+            inst_level6,
         )
     )
 
@@ -51,6 +79,26 @@ def call_level2():
     for _ in repeat(None, num):
         obj.meth()
 
+def call_level3():
+    obj = Level3()
+    for _ in repeat(None, num):
+        obj.meth()
+
+def call_level4():
+    obj = Level4()
+    for _ in repeat(None, num):
+        obj.meth()
+
+def call_level5():
+    obj = Level5()
+    for _ in repeat(None, num):
+        obj.meth()
+
+def call_level6():
+    obj = Level6()
+    for _ in repeat(None, num):
+        obj.meth()
+
 
 if __name__ == '__main__':
     tester(
@@ -58,6 +106,10 @@ if __name__ == '__main__':
             call_level0,
             call_level1,
             call_level2,
+            call_level3,
+            call_level4,
+            call_level5,
+            call_level6,
         )
     )
 

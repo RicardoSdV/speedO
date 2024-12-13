@@ -1,3 +1,6 @@
+from collections import defaultdict
+from functools import partial
+from sys import _getframe
 from time import time
 
 from memory_profiler import memory_usage
@@ -126,4 +129,30 @@ def make_big_nums_readable(num):
 def get_lens_2d(list_2d):
     return make_big_nums_readable(len(list_2d)), make_big_nums_readable(len(list_2d[0]))
 
+
+def get_public_callables(
+        exclude=('autoTester', 'repeat'),
+        frameNum=2,
+):
+    for name, local in _getframe(frameNum).f_locals.items():
+        if not name.startswith('_') and callable(local) and name not in exclude:
+            yield local
+
+def start_segregator(callable):
+    return callable.__name__.split('_')[0]
+
+def end_segregator(callable):
+    return callable.__name__.split('_')[-1]
+
+def get_segregated_callables(segregator):
+    callables = get_public_callables(frameNum=3)
+
+    segCallables = defaultdict(list)
+    for callable in callables:
+        segCallables[segregator(callable)].append(callable)
+
+    return segCallables.values()
+
+get_start_segregated_callables = partial(get_segregated_callables, start_segregator)
+get_end_segregated_callables   = partial(get_segregated_callables, end_segregator)
 

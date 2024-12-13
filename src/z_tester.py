@@ -1,5 +1,5 @@
 from z_utils import get_lens_2d, call_caller_of_callables_repeatedly_get_resultss, sort_results_names_calc_diff, \
-    pretty_print_results, calc_mean, calc_min
+    pretty_print_results, calc_mean, calc_min, get_public_callables, get_end_segregated_callables, get_start_segregated_callables
 
 
 def tester_2d(callables, list_3d=None, return_time=False, testing_what='times'):
@@ -59,12 +59,26 @@ def tester(callables, testing_what='times', is_callables_returning_time=False, p
 
     names, results, percentages = sort_results_names_calc_diff(results, [func.__name__ for func in callables])
 
-    if info:
-        info = '({})'.format(info)
+    if info: info = '({})'.format(info)
 
     print('Testing {} {} of {} rounds: {}'.format(testing_what, calking_what, num_repeats, info))
     pretty_print_results(names, results, percentages, testing_what)
 
+
+def autoTester(testing_what='times', is_callables_returning_time=False, print_rounds=True, num_repeats=5, calking_what='default', info='', segregator='default'):
+    """ Entirely fed up with writing the names of the callables over and over,
+    so will test most callables that don't start with _ in the file """
+
+    if segregator == 'start':
+        for callables in get_start_segregated_callables():
+            tester(tuple(callables)         , testing_what=testing_what, is_callables_returning_time=is_callables_returning_time, print_rounds=print_rounds, num_repeats=num_repeats, calking_what=calking_what, info=info)
+
+    if segregator == 'end':
+        for callables in get_end_segregated_callables():
+            tester(tuple(callables)         , testing_what=testing_what, is_callables_returning_time=is_callables_returning_time, print_rounds=print_rounds, num_repeats=num_repeats, calking_what=calking_what, info=info)
+
+    else:
+        tester(tuple(get_public_callables()), testing_what=testing_what, is_callables_returning_time=is_callables_returning_time, print_rounds=print_rounds, num_repeats=num_repeats, calking_what=calking_what, info=info)
 
 
 
