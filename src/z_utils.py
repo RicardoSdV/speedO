@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 from functools import partial
 from sys import _getframe
 from time import time
@@ -142,7 +142,8 @@ def start_segregator(callable):
     return callable.__name__.split('_')[0]
 
 def end_segregator(callable):
-    return callable.__name__.split('_')[-1]
+    end = callable.__name__.split('_')[-1]
+    return int(end) if end.isdigit() else end
 
 def get_segregated_callables(segregator):
     callables = get_public_callables(frameNum=3)
@@ -151,7 +152,10 @@ def get_segregated_callables(segregator):
     for callable in callables:
         segCallables[segregator(callable)].append(callable)
 
-    return segCallables.values()
+    segCallables = list(segCallables.values())
+    segCallables.sort(key=lambda callables: segregator(callables[0]))
+
+    return segCallables
 
 get_start_segregated_callables = partial(get_segregated_callables, start_segregator)
 get_end_segregated_callables   = partial(get_segregated_callables, end_segregator)

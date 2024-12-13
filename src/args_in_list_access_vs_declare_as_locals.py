@@ -228,128 +228,131 @@ Conclusion:
     worth it to use normal local declares, for example a file which contains many utils 
     where most of them wont be used and some will be used sparingly.
     
+    Exception: For some reason with 16 usages in python312 using locals declaring is better than defaults.
+    
     Python27:
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        do_declare_1        0.355    100  
-        default_declare_1   0.334    94   
-        no_declare_1        0.3112   88   
+        do_declare_1        0.3512   100  
+        default_declare_1   0.33     94   
+        no_declare_1        0.308    88   
         
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        no_declare_8        0.7056   100  
-        do_declare_8        0.636    90   
-        default_declare_8   0.5784   82   
+        do_declare_2        0.3854   100  
+        no_declare_2        0.3716   96   
+        default_declare_2   0.37     96   
         
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        do_declare_2        0.3856   100  
-        no_declare_2        0.3746   97   
-        default_declare_2   0.3684   96   
+        no_declare_4        0.48     100  
+        do_declare_4        0.4548   95   
+        default_declare_4   0.4416   92   
         
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        no_declare_4        0.4814   100  
-        do_declare_4        0.4552   95   
-        default_declare_4   0.4434   92   
+        no_declare_8        0.6934   100  
+        do_declare_8        0.6378   92   
+        default_declare_8   0.5772   83   
         
         Testing times mean of 5 rounds: 
         Name                 Secs     %    
-        no_declare_16        1.2472   100  
-        do_declare_16        0.8712   70   
-        default_declare_16   0.8648   69   
+        no_declare_16        1.47     100  
+        do_declare_16        0.9884   67   
+        default_declare_16   0.9858   67   
         
     Python38:
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        do_declare_1        0.2678   100  
-        no_declare_1        0.2444   91   
-        default_declare_1   0.2435   91   
+        do_declare_1        0.2676   100  
+        no_declare_1        0.2459   92   
+        default_declare_1   0.2454   92   
         
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        do_declare_2        0.2908   100  
-        no_declare_2        0.2826   97   
-        default_declare_2   0.2656   91   
+        do_declare_2        0.2918   100  
+        no_declare_2        0.282    97   
+        default_declare_2   0.2657   91   
         
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        no_declare_4        0.3579   100  
-        do_declare_4        0.3375   94   
-        default_declare_4   0.3166   88   
+        no_declare_4        0.3531   100  
+        do_declare_4        0.3359   95   
+        default_declare_4   0.3129   89   
         
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        no_declare_8        0.5806   100  
-        do_declare_8        0.4502   78   
-        default_declare_8   0.4276   74   
+        no_declare_8        0.5764   100  
+        do_declare_8        0.4477   78   
+        default_declare_8   0.4272   74   
         
         Testing times mean of 5 rounds: 
         Name                 Secs     %    
-        no_declare_16        0.9265   100  
-        do_declare_16        0.713    77   
-        default_declare_16   0.706    76   
+        no_declare_16        0.923    100  
+        do_declare_16        0.8925   97   
+        default_declare_16   0.7055   76   
+
 
     Python310:
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        do_declare_1        0.313    100  
-        default_declare_1   0.2923   93   
-        no_declare_1        0.2863   91   
+        do_declare_1        0.3041   100  
+        default_declare_1   0.2804   92   
+        no_declare_1        0.2783   92   
         
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        do_declare_2        0.342    100  
-        no_declare_2        0.32     94   
-        default_declare_2   0.3181   93   
+        do_declare_2        0.331    100  
+        no_declare_2        0.3193   96   
+        default_declare_2   0.3049   92   
         
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        no_declare_4        0.4186   100  
-        do_declare_4        0.3949   94   
-        default_declare_4   0.3724   89   
+        no_declare_4        0.4172   100  
+        do_declare_4        0.3925   94   
+        default_declare_4   0.3521   84   
         
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        no_declare_8        0.6514   100  
-        do_declare_8        0.582    89   
-        default_declare_8   0.534    82   
+        no_declare_8        0.651    100  
+        do_declare_8        0.5769   89   
+        default_declare_8   0.5364   82   
         
         Testing times mean of 5 rounds: 
         Name                 Secs     %    
-        no_declare_16        0.9858   100  
-        do_declare_16        0.8176   83   
-        default_declare_16   0.7751   79   
-        
+        no_declare_16        1.4281   100  
+        do_declare_16        1.1741   82   
+        default_declare_16   1.1452   80   
+
+
     Python312:
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        do_declare_1        0.2148   100  
-        default_declare_1   0.2045   95   
-        no_declare_1        0.1964   91   
+        do_declare_1        0.214    100  
+        default_declare_1   0.2077   97   
+        no_declare_1        0.1966   92   
         
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        do_declare_2        0.2481   100  
-        no_declare_2        0.2297   93   
-        default_declare_2   0.2297   93   
+        do_declare_2        0.2456   100  
+        no_declare_2        0.2321   95   
+        default_declare_2   0.2277   93   
         
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        no_declare_4        0.3159   100  
-        do_declare_4        0.3013   95   
-        default_declare_4   0.2815   89   
+        no_declare_4        0.3164   100  
+        do_declare_4        0.2989   94   
+        default_declare_4   0.2807   89   
         
         Testing times mean of 5 rounds: 
         Name                Secs     %    
-        no_declare_8        0.5146   100  
-        do_declare_8        0.3867   75   
-        default_declare_8   0.3722   72   
+        no_declare_8        0.5313   100  
+        do_declare_8        0.3854   73   
+        default_declare_8   0.3709   70   
         
         Testing times mean of 5 rounds: 
         Name                 Secs     %    
-        no_declare_16        0.8023   100  
-        default_declare_16   0.6064   76   
-        do_declare_16        0.6013   75   
-
+        no_declare_16        0.8013   100  
+        default_declare_16   0.6002   75   
+        do_declare_16        0.5957   74   
 """
