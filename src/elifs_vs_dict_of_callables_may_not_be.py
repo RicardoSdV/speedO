@@ -58,36 +58,31 @@ def dict_of_callables_1():
     _shuffled_range_1 = shuffled_range_1
     for _ in repeat(None, num):
         for key in _shuffled_range_1:
-            if key in _dict_of_callables:
-                _dict_of_callables[key]()
+            _dict_of_callables[key]()
 
 def dict_of_callables_2():
     _shuffled_range_2 = shuffled_range_2
     for _ in repeat(None, num):
         for key in _shuffled_range_2:
-            if key in _dict_of_callables:
-                _dict_of_callables[key]()
+            _dict_of_callables[key]()
 
 def dict_of_callables_4():
     _shuffled_range_4 = shuffled_range_4
     for _ in repeat(None, num):
         for key in _shuffled_range_4:
-            if key in _dict_of_callables:
-                _dict_of_callables[key]()
+            _dict_of_callables[key]()
 
 def dict_of_callables_8():
     _shuffled_range_8 = shuffled_range_8
     for _ in repeat(None, num):
         for key in _shuffled_range_8:
-            if key in _dict_of_callables:
-                _dict_of_callables[key]()
+            _dict_of_callables[key]()
 
 def dict_of_callables_16():
     _shuffled_range_16 = shuffled_range_16
     for _ in repeat(None, num):
         for key in _shuffled_range_16:
-            if key in _dict_of_callables:
-                _dict_of_callables[key]()
+            _dict_of_callables[key]()
 
 def elifs_1():
     _shuffled_range_1 = shuffled_range_1
@@ -162,65 +157,63 @@ tester(
 
 """
 Conclusion: 
-    - Across the board at about 8 elements it starts becoming worth it
-    to use a dict of callables instead of a bunch of elifs. Of course
-    if you dont need to check weather the key exists in the dict it will
-    be faster
+    - Python27: Dict starts being faster at 4+ elements
+    
+    - Python3+: Dict always faster, with a surprising difference at 16 elements
 
     Python27:
-        Testing times mean of 5 rounds: 
         Name                   Secs     %    
-        elifs_16               1.3812   100  
-        dict_of_callables_16   0.7972   57   
-        elifs_8                0.485    35   
-        dict_of_callables_8    0.4138   30   
-        dict_of_callables_4    0.2214   16   
-        elifs_4                0.1862   13   
-        dict_of_callables_2    0.119    9    
-        elifs_2                0.0978   7    
-        dict_of_callables_1    0.0702   5    
-        elifs_1                0.055    4    
+        elifs_16               1.414    100  
+        dict_of_callables_16   0.6014   43   
+        elifs_8                0.4662   33   
+        dict_of_callables_8    0.3152   22   
+        elifs_4                0.1882   13   
+        dict_of_callables_4    0.1752   12   
+        dict_of_callables_2    0.0944   7    
+        elifs_2                0.0932   7    
+        dict_of_callables_1    0.0596   4    
+        elifs_1                0.0554   4    
         
     Python38:
         Testing times mean of 5 rounds: 
         Name                   Secs     %    
-        elifs_16               1.4255   100  
-        dict_of_callables_16   0.6566   46   
-        elifs_8                0.4679   33   
-        dict_of_callables_8    0.3412   24   
-        dict_of_callables_4    0.1785   13   
-        elifs_4                0.1738   12   
-        dict_of_callables_2    0.092    6    
-        elifs_2                0.0766   5    
-        dict_of_callables_1    0.051    4    
-        elifs_1                0.0407   3    
+        elifs_16               1.4299   100  
+        dict_of_callables_16   0.4909   34   
+        elifs_8                0.4614   32   
+        dict_of_callables_8    0.2556   18   
+        elifs_4                0.1805   13   
+        dict_of_callables_4    0.1345   9    
+        elifs_2                0.0797   6    
+        dict_of_callables_2    0.0724   5    
+        elifs_1                0.042    3    
+        dict_of_callables_1    0.0412   3    
         
     Python310:
         Testing times mean of 5 rounds: 
         Name                   Secs     %    
-        elifs_16               1.6478   100  
-        dict_of_callables_16   0.7648   46   
-        elifs_8                0.5192   32   
-        dict_of_callables_8    0.3942   24   
-        dict_of_callables_4    0.213    13   
-        elifs_4                0.2038   12   
-        dict_of_callables_2    0.1059   6    
-        elifs_2                0.0903   5    
-        dict_of_callables_1    0.059    4    
-        elifs_1                0.0463   3    
+        elifs_16               1.6773   100  
+        dict_of_callables_16   0.5686   34   
+        elifs_8                0.5516   33   
+        dict_of_callables_8    0.2998   18   
+        elifs_4                0.2058   12   
+        dict_of_callables_4    0.1618   10   
+        elifs_2                0.0929   6    
+        dict_of_callables_2    0.0822   5    
+        elifs_1                0.0483   3    
+        dict_of_callables_1    0.0475   3      
         
     Python312:
         Testing times mean of 5 rounds: 
         Name                   Secs     %    
-        elifs_16               1.2657   100  
-        dict_of_callables_16   0.5545   44   
-        elifs_8                0.3726   28   
-        dict_of_callables_8    0.292    23   
-        dict_of_callables_4    0.1483   12   
-        elifs_4                0.1395   11   
-        dict_of_callables_2    0.0765   6    
-        elifs_2                0.0626   5    
-        dict_of_callables_1    0.0448   4    
-        elifs_1                0.0353   3    
-
+        elifs_16               1.2744   100  
+        dict_of_callables_16   0.4582   36   
+        elifs_8                0.3873   30   
+        dict_of_callables_8    0.2376   19   
+        elifs_4                0.1396   11   
+        dict_of_callables_4    0.1165   9    
+        elifs_2                0.0635   5    
+        dict_of_callables_2    0.0627   5    
+        elifs_1                0.0371   3    
+        dict_of_callables_1    0.037    3    
+ 
 """
