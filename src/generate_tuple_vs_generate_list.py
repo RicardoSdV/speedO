@@ -34,6 +34,7 @@ if __name__ == '__main__':
 
 """
 Conclusion:
+    - Generating a tuple surprisingly fast.
     Python27:
     
         Testing times:

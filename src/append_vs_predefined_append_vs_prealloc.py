@@ -7,32 +7,43 @@ be able to have complex loops happen in list comprehension
 from src.z_data import data
 from src.z_tester import tester_2d
 
+class CircularBuffer(list):
+    def __init__(self, *args):
+        super(CircularBuffer, self).__init__(args)
+        self.__cnt = 0
+
 def normal_append(list_2d):
     for inner_list in list_2d:
         result = []
         for i in inner_list:
-            result.append(i+1)
+            result.append(i)
 
 def predef_append(list_2d):
     for inner_list in list_2d:
         result = []
         res_app = result.append
         for i in inner_list:
-            res_app(i+1)
+            res_app(i)
 
-def prealloc_with_enumerate(list_2d):
+def prealloc(list_2d):
     """ Enumerate makes sense because normally you wouldn't assign the index """
     for inner_list in list_2d:
         result = [None] * len(inner_list)
         for i, j in enumerate(inner_list):
-            result[i] = j+1
+            result[i] = j
+
+def circular_buffer(list_2d):
+    for inner_list in list_2d:
+        result = [None] * len(inner_list)
+        for i, j in enumerate(inner_list):
+            result[i] = j
 
 
 tester_2d(
     (
         normal_append,
         predef_append,
-        prealloc_with_enumerate,
+        prealloc,
     ),
     data.slower_3d_list,
     testing_what='times'
@@ -43,7 +54,7 @@ if __name__ == '__main__':
         (
             normal_append,
             predef_append,
-            prealloc_with_enumerate,
+            prealloc,
         ),
         list_3d=data.slower_3d_list,
         testing_what='memories'

@@ -34,7 +34,7 @@ def tester_2d(callables, list_3d=None, return_time=False, testing_what='times'):
     print('')
 
 
-def tester(callables, testing_what='times', is_callables_returning_time=False, print_rounds=True, num_repeats=5, calking_what='default', info=''):
+def tester(callables, testing_what='times', is_callables_returning_time=False, print_rounds=False, num_repeats=5, calking_what='default', info='', print_num_rounds=False):
 
     resultss = call_caller_of_callables_repeatedly_get_resultss(
         num_repeats, callables, testing_what, is_callables_returning_time, print_rounds
@@ -61,7 +61,7 @@ def tester(callables, testing_what='times', is_callables_returning_time=False, p
 
     if info: info = '({})'.format(info)
 
-    print('Testing {} {} of {} rounds: {}'.format(testing_what, calking_what, num_repeats, info))
+    if print_num_rounds: print('Testing {} {} of {} rounds: {}'.format(testing_what, calking_what, num_repeats, info))
     pretty_print_results(names, results, percentages, testing_what)
 
 

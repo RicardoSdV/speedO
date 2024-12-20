@@ -31,9 +31,7 @@ def outer():
 
 closure = outer()
 
-
-
-num = data.k100
+num = data.M10
 
 def call_func_with_ref_to_glob():
     _glob_ref_func = glob_ref_func
@@ -43,12 +41,12 @@ def call_func_with_ref_to_glob():
 def call_func_with_defaults():
     _defaults_func = defaults_func
     for _ in repeat(None, num):
-        defaults_func()
+        _defaults_func()
 
 def call_func_pass_args():
     _args_func = args_func
     for _ in repeat(None, num):
-        args_func(1, 2, 3, 4, 5, 6)
+        _args_func(1, 2, 3, 4, 5, 6)
 
 def call_partial_with_args():
     __partial = _partial
@@ -69,61 +67,44 @@ tester(
         call_partial_with_args,
         call_closure,
     ),
-    num_repeats = 100,
     print_rounds = False,
 )
 
 """
 Conclusion:
-    - Python38 is the sweet spot for calling partials with 6 args
-    
-    - Closure, from tied to slightly faster than partial
+    - Defaults is fastest until 312 otherwise just pass args
     
     Python27:
-        - Defaults fastest, globals surprisingly bad, partial & passing args
-        not that different to matter.
-         
-        Testing times mean of 5 rounds: 
         Name                         Secs     %    
-        call_closure                 0.0078   100  
-        call_partial_with_args       0.0078   100  
-        call_func_pass_args          0.0076   97   
-        call_func_with_ref_to_glob   0.0075   96   
-        call_func_with_defaults      0.0071   91   
+        call_closure                 0.8034   100  
+        call_partial_with_args       0.7958   99   
+        call_func_with_ref_to_glob   0.7684   96   
+        call_func_pass_args          0.7464   93   
+        call_func_with_defaults      0.7008   87   
         
     Python38:
-        - Partial better than passing args, defaults still better, globals
-        about as good as partial
-        
         Name                         Secs     %    
-        call_func_pass_args          0.0058   100  
-        call_func_with_ref_to_glob   0.0055   95   
-        call_partial_with_args       0.0055   95   
-        call_closure                 0.0053   92   
-        call_func_with_defaults      0.0053   92   
+        call_func_pass_args          0.5739   100  
+        call_partial_with_args       0.5628   98   
+        call_func_with_ref_to_glob   0.5483   96   
+        call_closure                 0.5473   95   
+        call_func_with_defaults      0.4916   86   
     
     Python310:
-        - Partials & defaults slowest, globals & passing args fastest
-    
-        Testing times mean of 100 rounds: 
         Name                         Secs     %    
-        call_func_pass_args          0.0069   100  
-        call_func_with_ref_to_glob   0.0067   97   
-        call_func_with_defaults      0.0063   91   
-        call_partial_with_args       0.0061   88   
-        call_closure                 0.0058   84   
+        call_func_with_ref_to_glob   0.693    100  
+        call_func_pass_args          0.6696   97   
+        call_partial_with_args       0.6323   91   
+        call_closure                 0.5987   86   
+        call_func_with_defaults      0.5973   86   
     
     Python312:
-        - Globals, defaults & passing args in the same category of fast
-        partials slowest 
-    
-        Testing times mean of 100 rounds: 
         Name                         Secs     %    
-        call_partial_with_args       0.0066   100  
-        call_closure                 0.006    91   
-        call_func_pass_args          0.0056   85   
-        call_func_with_defaults      0.0055   84   
-        call_func_with_ref_to_glob   0.0051   79   
+        call_partial_with_args       0.6566   100  
+        call_closure                 0.6115   93   
+        call_func_pass_args          0.5664   86   
+        call_func_with_defaults      0.5595   85   
+        call_func_with_ref_to_glob   0.5252   80   
 
 """
 
