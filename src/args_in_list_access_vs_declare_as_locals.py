@@ -1,7 +1,7 @@
 from itertools import repeat
 
 from src.z_data import data
-from src.z_tester import autoTester
+from src.z_tester import auto_tester
 
 num = data.M10
 
@@ -215,7 +215,7 @@ def default_declare_16():
     for _ in repeat(None, num):
         _callable()
 
-autoTester(segregator='end', print_rounds=False)
+auto_tester(segregator='end', print_rounds=False)
 
 
 """

@@ -54,9 +54,13 @@ class Data:
     @property
     def zero(self): return 0
     @property
+    def one (self): return 1
+    @property
     def two (self): return 2
     @property
     def five(self): return 5
+    @property
+    def six (self): return 6
     @property
     def ten (self): return 10
     @property
@@ -77,9 +81,13 @@ class Data:
     def B   (self): return 1000000000
 
     @property
+    def one_range (self): return range(self.one)
+    @property
     def two_range (self): return range(self.two)
     @property
     def five_range(self): return range(self.five)
+    @property
+    def six_range(self):  return range(self.six)
     @property
     def ten_range (self): return range(self.ten)
     @property
@@ -98,9 +106,13 @@ class Data:
     def M100_range(self): return range(self.M100)
 
     @property
+    def one_ints (self): return list(self.one_range)
+    @property
     def two_ints (self): return list(self.two_range)
     @property
     def five_ints(self): return list(self.five_range)
+    @property
+    def six_ints(self):  return list(self.six_range)
     @property
     def ten_ints (self): return list(self.ten_range)
     @property
@@ -117,6 +129,14 @@ class Data:
     def M10_ints (self): return list(self.M10_range)
     @property
     def M100_ints(self): return list(self.M100_range)
+
+    @property
+    def six_ints_tup(self): return tuple(self.six_range)
+
+    @property
+    def M10__six_int_lists (self): return [self.six_ints     for _ in repeat(None, self.M10)]
+    @property
+    def M10__six_int_tuples(self): return [self.six_ints_tup for _ in repeat(None, self.M10)]
 
     @property
     def two_rnd_ints(self): return [randint(self.zero, self.two-1) for _ in repeat(None, self.two)]

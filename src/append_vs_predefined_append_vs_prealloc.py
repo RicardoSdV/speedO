@@ -4,13 +4,37 @@ The fastest way is list comprehension but some people don't find this readable
 and sometimes its a mess to have to define a bunch of generators and so on to
 be able to have complex loops happen in list comprehension
 """
+from collections import deque
+
 from src.z_data import data
 from src.z_tester import tester_2d
 
-class CircularBuffer(list):
-    def __init__(self, *args):
-        super(CircularBuffer, self).__init__(args)
+class CircularBuffer(object):
+    def __init__(self, size=2000):
+        self.__list = [None] * size
         self.__cnt = 0
+        self.__size = size
+
+    def append_try_except(self, el):
+        try:
+            self.__cnt += 1
+            self.__list[self.__cnt] = el
+        except IndexError:
+            self.__cnt = 0
+            self.__list[self.__cnt] = el
+
+    def check_and_append(self, el):
+        self.__cnt += 1
+        if self.__cnt == self.__size:
+            self.__cnt = 0
+
+        self.__list[self.__cnt] = el
+
+circular_buffer = CircularBuffer()
+deque_circ_buff = deque(maxlen=2000)
+_deque = deque()
+app_to_circ_buff = deque_circ_buff.append
+app_deque = _deque.append
 
 def normal_append(list_2d):
     for inner_list in list_2d:
@@ -32,128 +56,172 @@ def prealloc(list_2d):
         for i, j in enumerate(inner_list):
             result[i] = j
 
-def circular_buffer(list_2d):
+def circular_buffer_check_and_append(list_2d):
+    app = circular_buffer.check_and_append
     for inner_list in list_2d:
-        result = [None] * len(inner_list)
-        for i, j in enumerate(inner_list):
-            result[i] = j
+        for el in inner_list:
+            app(el)
 
+def circular_buffer_append_try_except(list_2d):
+    app = circular_buffer.append_try_except
+    for inner_list in list_2d:
+        for el in inner_list:
+            app(el)
+
+def deque_circ_buff(outer):
+    app = app_to_circ_buff
+    for inner in outer:
+        for el in inner:
+            app(el)
+
+def deque_circ_buff_no_max(outer):
+    for inner in outer:
+        app = app_deque
+        for el in inner:
+            app(el)
 
 tester_2d(
     (
         normal_append,
         predef_append,
         prealloc,
+        circular_buffer_check_and_append,
+        circular_buffer_append_try_except,
+        deque_circ_buff,
+        deque_circ_buff_no_max,
     ),
-    data.slower_3d_list,
-    testing_what='times'
 )
 
-if __name__ == '__main__':
-    tester_2d(
-        (
-            normal_append,
-            predef_append,
-            prealloc,
-        ),
-        list_3d=data.slower_3d_list,
-        testing_what='memories'
-    )
 
 """
-Times:
+Conclusion:
+    - Writing your own circular buffer is a terrible idea, deque is surprisingly fast, specially for smaller sizes,
+    which seems wierd. Also maxlen vs no maxlen seems kinda strange, because it makes sense for small inner lists 
+    having maxlen is faster since you dont have to create a new deque, but why is it faster when the list is like 
+    1M elements? maybe because the deque doesnt have to grow.
+    
     Python 27:
         - Predefining the append is always way faster, however, if you have a list > 10M elements
         it might make sense to preallocate the elements and assign them        
         
-        Average of 3 rounds, len(outer_list) = 10 000 000, len(inner_list) = 10: 
-        Name                      Secs     %    
-        prealloc_with_enumerate   4.6177   100  
-        normal_append             4.1143   89   
-        predef_append             2.98     65   
+        Average of 3 rounds, len(outer) = 1 000 000, len(inner) = 10: 
+        Name                                Secs     %    
+        circular_buffer_check_and_append    1.3533   100  
+        circular_buffer_append_try_except   1.183    87   
+        prealloc                            0.4773   35   
+        normal_append                       0.4127   30   
+        predef_append                       0.298    22   
+        deque_circ_buff_no_max              0.2067   15   
+        deque_circ_buff                     0.1807   13   
         
-        Average of 3 rounds, len(outer_list) = 1 000 000, len(inner_list) = 100: 
-        Name                      Secs     %    
-        normal_append             3.0057   100  
-        prealloc_with_enumerate   2.5993   86   
-        predef_append             1.9843   66   
+        Average of 3 rounds, len(outer) = 100 000, len(inner) = 100: 
+        Name                                Secs     %    
+        circular_buffer_check_and_append    1.8803   100  
+        circular_buffer_append_try_except   1.529    81   
+        normal_append                       0.3897   21   
+        prealloc                            0.359    19   
+        predef_append                       0.2833   15   
+        deque_circ_buff_no_max              0.259    14   
+        deque_circ_buff                     0.2353   13   
         
-        Average of 3 rounds, len(outer_list) = 100 000, len(inner_list) = 1 000: 
-        Name                      Secs     %    
-        normal_append             2.6103   100  
-        prealloc_with_enumerate   2.5157   96   
-        predef_append             1.641    63   
+        Average of 3 rounds, len(outer) = 10 000, len(inner) = 1 000: 
+        Name                                Secs     %    
+        circular_buffer_check_and_append    2.1807   100  
+        circular_buffer_append_try_except   1.725    79   
+        normal_append                       0.521    24   
+        prealloc                            0.3997   18   
+        predef_append                       0.3547   16   
+        deque_circ_buff_no_max              0.2943   13   
+        deque_circ_buff                     0.2663   12   
         
-        Average of 3 rounds, len(outer_list) = 10 000, len(inner_list) = 10 000: 
-        Name                      Secs     %    
-        prealloc_with_enumerate   2.5917   100  
-        normal_append             2.4953   96   
-        predef_append             1.5497   60   
+        Average of 3 rounds, len(outer) = 1 000, len(inner) = 10 000: 
+        Name                                Secs     %    
+        circular_buffer_check_and_append    2.177    100  
+        circular_buffer_append_try_except   1.7317   80   
+        normal_append                       0.486    22   
+        prealloc                            0.4047   19   
+        predef_append                       0.31     14   
+        deque_circ_buff_no_max              0.2997   14   
+        deque_circ_buff                     0.275    13   
         
-        Average of 3 rounds, len(outer_list) = 1 000, len(inner_list) = 100 000: 
-        Name                      Secs     %    
-        prealloc_with_enumerate   2.788    100  
-        normal_append             2.5923   93   
-        predef_append             1.6493   59   
+        Average of 3 rounds, len(outer) = 100, len(inner) = 100 000: 
+        Name                                Secs     %    
+        circular_buffer_check_and_append    2.192    100  
+        circular_buffer_append_try_except   1.72     78   
+        normal_append                       0.497    23   
+        prealloc                            0.419    19   
+        predef_append                       0.3167   14   
+        deque_circ_buff_no_max              0.2903   13   
+        deque_circ_buff                     0.267    12   
         
-        Average of 3 rounds, len(outer_list) = 100, len(inner_list) = 1 000 000: 
-        Name                      Secs     %    
-        normal_append             3.7063   100  
-        prealloc_with_enumerate   2.84     77   
-        predef_append             2.7027   73   
-        
-        Average of 3 rounds, len(outer_list) = 10, len(inner_list) = 10 000 000: 
-        Name                      Secs     %    
-        normal_append             3.8933   100  
-        predef_append             2.8463   73   
-        prealloc_with_enumerate   2.77     71  
-        
-        
+        Average of 3 rounds, len(outer) = 10, len(inner) = 1 000 000: 
+        Name                                Secs     %    
+        circular_buffer_check_and_append    2.2      100  
+        circular_buffer_append_try_except   1.7373   79   
+        normal_append                       0.693    31   
+        predef_append                       0.514    23   
+        prealloc                            0.4483   20   
+        deque_circ_buff_no_max              0.3033   14   
+        deque_circ_buff                     0.275    13   
+
     Python38:
         - As we know normal append becomes better in python3, but predefining it still 
         faster. Prealloc the list increases its range to > 1M
     
-        Average of 3 rounds, len(outer_list) = 10 000 000, len(inner_list) = 10: 
-        Name                      Secs     %    
-        prealloc_with_enumerate   2.7171   100  
-        normal_append             1.9343   71   
-        predef_append             1.6108   59   
+        Average of 3 rounds, len(outer) = 1 000 000, len(inner) = 10: 
+        Name                                Secs     %    
+        circular_buffer_check_and_append    0.9938   100  
+        circular_buffer_append_try_except   0.8161   82   
+        prealloc                            0.2679   27   
+        normal_append                       0.2025   20   
+        predef_append                       0.1704   17   
+        deque_circ_buff                     0.153    15   
         
-        Average of 3 rounds, len(outer_list) = 1 000 000, len(inner_list) = 100: 
-        Name                      Secs     %    
-        normal_append             1.9565   100  
-        prealloc_with_enumerate   1.8598   95   
-        predef_append             1.5211   78   
+        Average of 3 rounds, len(outer) = 100 000, len(inner) = 100: 
+        Name                                Secs     %    
+        circular_buffer_check_and_append    0.9741   100  
+        circular_buffer_append_try_except   0.8066   83   
+        normal_append                       0.1975   20   
+        prealloc                            0.1854   19   
+        predef_append                       0.1588   16   
+        deque_circ_buff                     0.1378   14   
         
-        Average of 3 rounds, len(outer_list) = 100 000, len(inner_list) = 1 000: 
-        Name                      Secs     %    
-        prealloc_with_enumerate   2.0406   100  
-        normal_append             1.8396   90   
-        predef_append             1.4014   69   
+        Average of 3 rounds, len(outer) = 10 000, len(inner) = 1 000: 
+        Name                                Secs     %    
+        circular_buffer_check_and_append    0.9827   100  
+        circular_buffer_append_try_except   0.8183   83   
+        prealloc                            0.2054   21   
+        normal_append                       0.1886   19   
+        predef_append                       0.1424   14   
+        deque_circ_buff                     0.1344   14   
         
-        Average of 3 rounds, len(outer_list) = 10 000, len(inner_list) = 10 000: 
-        Name                      Secs     %    
-        prealloc_with_enumerate   2.0926   100  
-        normal_append             1.7548   84   
-        predef_append             1.3306   64   
+        Average of 3 rounds, len(outer) = 1 000, len(inner) = 10 000: 
+        Name                                Secs     %    
+        circular_buffer_check_and_append    0.9832   100  
+        circular_buffer_append_try_except   0.8092   82   
+        prealloc                            0.2143   22   
+        normal_append                       0.1785   18   
+        predef_append                       0.1358   14   
+        deque_circ_buff                     0.1292   13   
         
-        Average of 3 rounds, len(outer_list) = 1 000, len(inner_list) = 100 000: 
-        Name                      Secs     %    
-        prealloc_with_enumerate   2.2209   100  
-        normal_append             1.7733   80   
-        predef_append             1.3431   60   
+        Average of 3 rounds, len(outer) = 100, len(inner) = 100 000: 
+        Name                                Secs     %    
+        circular_buffer_check_and_append    0.9802   100  
+        circular_buffer_append_try_except   0.8141   83   
+        prealloc                            0.2283   23   
+        normal_append                       0.179    18   
+        deque_circ_buff                     0.1358   14   
+        predef_append                       0.1341   14   
         
-        Average of 3 rounds, len(outer_list) = 100, len(inner_list) = 1 000 000: 
-        Name                      Secs     %    
-        normal_append             2.8619   100  
-        predef_append             2.4246   85   
-        prealloc_with_enumerate   2.3216   81   
-        
-        Average of 3 rounds, len(outer_list) = 10, len(inner_list) = 10 000 000: 
-        Name                      Secs     %    
-        normal_append             3.0191   100  
-        predef_append             2.6024   86   
-        prealloc_with_enumerate   2.3242   77   
+        Average of 3 rounds, len(outer) = 10, len(inner) = 1 000 000: 
+        Name                                Secs     %    
+        circular_buffer_check_and_append    0.9881   100  
+        circular_buffer_append_try_except   0.8088   82   
+        normal_append                       0.2832   28   
+        predef_append                       0.2401   24   
+        prealloc                            0.2358   24   
+        deque_circ_buff                     0.1322   13   
+
         
     Python312:
         - Normal append wins now, prealloc still has it for > 1M

@@ -1,7 +1,7 @@
 from itertools import repeat
 
 from src.z_data import data
-from src.z_tester import autoTester
+from src.z_tester import auto_tester
 
 
 class _Slots(object):
@@ -84,7 +84,7 @@ def call_no_slots_statMeth():
         _no_slots.statMeth()
 
 
-autoTester(print_rounds=False, segregator='end')
+auto_tester(print_rounds=False, segregator='end')
 
 """
 Conclusion:

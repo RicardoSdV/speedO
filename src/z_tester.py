@@ -65,7 +65,7 @@ def tester(callables, testing_what='times', is_callables_returning_time=False, p
     pretty_print_results(names, results, percentages, testing_what)
 
 
-def autoTester(testing_what='times', is_callables_returning_time=False, print_rounds=True, num_repeats=5, calking_what='default', info='', segregator='default'):
+def auto_tester(testing_what='times', is_callables_returning_time=False, print_rounds=True, num_repeats=5, calking_what='default', info='', segregator='default'):
     """ Entirely fed up with writing the names of the callables over and over,
     so will test most callables that don't start with _ in the file """
 
