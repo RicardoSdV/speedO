@@ -131,29 +131,29 @@ def get_lens_2d(list_2d):
 
 
 def get_public_callables(
-        exclude=('auto_tester', 'repeat'),
+        exclude={'auto_tester', 'repeat', 'ifilter'},
         frameNum=2,
 ):
     for name, local in _getframe(frameNum).f_locals.items():
         if not name.startswith('_') and callable(local) and name not in exclude:
             yield local
 
-def start_segregator(callable):
-    return callable.__name__.split('_')[0]
+def start_segregator(callable, num_parts):
+    return '_'.join(callable.__name__.split('_')[:num_parts])
 
-def end_segregator(callable):
-    end = callable.__name__.split('_')[-1]
+def end_segregator(callable, num_parts):
+    end = '_'.join(callable.__name__.split('_')[-num_parts:])
     return int(end) if end.isdigit() else end
 
-def get_segregated_callables(segregator):
+def get_segregated_callables(segregator, num_parts):
     callables = get_public_callables(frameNum=3)
 
     segCallables = defaultdict(list)
     for callable in callables:
-        segCallables[segregator(callable)].append(callable)
+        segCallables[segregator(callable, num_parts)].append(callable)
 
     segCallables = list(segCallables.values())
-    segCallables.sort(key=lambda callables: segregator(callables[0]))
+    segCallables.sort(key=lambda callables: segregator(callables[0], num_parts))
 
     return segCallables
 

@@ -44,6 +44,9 @@ def comprehend_list_of_tuples():
 def comprehend_list_of_tuples2():
     return [tuple([hun_chars for _ in repeat(None, k)]) for _ in repeat(None, k100)]
 
+def comprehend_list_of_tuples3():
+    return [tuple((hun_chars for _ in repeat(None, k))) for _ in repeat(None, k100)]
+
 
 if __name__ == '__main__':
 
@@ -54,6 +57,7 @@ if __name__ == '__main__':
             comprehend_list_of_lists,
             comprehend_list_of_tuples,
             comprehend_list_of_tuples2,
+            comprehend_list_of_tuples3,
         ),
         testing_what='memories'
     )
@@ -64,7 +68,7 @@ if __name__ == '__main__':
             list_of_tuples,
             comprehend_list_of_lists,
             comprehend_list_of_tuples,
-            comprehend_list_of_tuples2,
+            comprehend_list_of_tuples3,
         ),
         testing_what='times'
     )
@@ -87,11 +91,12 @@ Conclusion:
     
         Testing memories average of 5 rounds: 
         Name                         Mibs       %    
-        list_of_lists                863.7984   100  
-        comprehend_list_of_lists     826.2133   96   
-        list_of_tuples               795.5484   92   
-        comprehend_list_of_tuples2   751.6516   87   
-        comprehend_list_of_tuples    716.9148   83   
+        list_of_lists                674.3359   100  
+        comprehend_list_of_lists     643.3555   95   
+        list_of_tuples               549.3477   81   
+        comprehend_list_of_tuples    523.1758   78   
+        comprehend_list_of_tuples2   505.418    75   
+        comprehend_list_of_tuples3   490.2852   73   
         
         Testing times average of 5 rounds: 
         Name                         Secs     %    

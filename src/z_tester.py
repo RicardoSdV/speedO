@@ -65,16 +65,16 @@ def tester(callables, testing_what='times', is_callables_returning_time=False, p
     pretty_print_results(names, results, percentages, testing_what)
 
 
-def auto_tester(testing_what='times', is_callables_returning_time=False, print_rounds=True, num_repeats=5, calking_what='default', info='', segregator='default'):
+def auto_tester(testing_what='times', is_callables_returning_time=False, print_rounds=False, num_repeats=5, calking_what='default', info='', segregator='default', seg_parts=1):
     """ Entirely fed up with writing the names of the callables over and over,
     so will test most callables that don't start with _ in the file """
 
     if segregator == 'start':
-        for callables in get_start_segregated_callables():
+        for callables in get_start_segregated_callables(seg_parts):
             tester(tuple(callables)         , testing_what=testing_what, is_callables_returning_time=is_callables_returning_time, print_rounds=print_rounds, num_repeats=num_repeats, calking_what=calking_what, info=info)
 
     if segregator == 'end':
-        for callables in get_end_segregated_callables():
+        for callables in get_end_segregated_callables(seg_parts):
             tester(tuple(callables)         , testing_what=testing_what, is_callables_returning_time=is_callables_returning_time, print_rounds=print_rounds, num_repeats=num_repeats, calking_what=calking_what, info=info)
 
     else:
