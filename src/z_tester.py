@@ -1,5 +1,13 @@
+import sys
+
 from z_utils import get_lens_2d, call_caller_of_callables_repeatedly_get_resultss, sort_results_names_calc_diff, \
     pretty_print_results, calc_mean, calc_min, get_public_callables, get_end_segregated_callables, get_start_segregated_callables
+
+if sys.version.startswith('2'):
+    from zz_py2 import prnt
+else:
+    from zz_py3 import prnt
+
 
 
 def tester_2d(callables, list_3d=None, return_time=False, testing_what='times'):
@@ -18,9 +26,9 @@ def tester_2d(callables, list_3d=None, return_time=False, testing_what='times'):
     print('Testing {}:\n'.format(testing_what))
     for list_2d in list_3d:
         len_outer_list, len_inner_list = get_lens_2d(list_2d)
-        print('Average of {} rounds, len(outer) = {}, len(inner) = {}: '.format(
-            num_repeats, len_outer_list, len_inner_list)
-        )
+
+        prnt('Average of {} rounds, len(outer) = {}, len(inner) = {}: '.format(
+            num_repeats, len_outer_list, len_inner_list), end='')
 
         resultss = call_caller_of_callables_repeatedly_get_resultss(
             num_repeats, callables, testing_what, return_time, False, arg=list_2d
