@@ -46,7 +46,8 @@ tester_2d(
 """
 Conclusion:
     - If you're going to create a generator to immediately consume it into a list or a tuple
-    it makes more sense to use a predefined append or a normal append in python312. 
+    it makes more sense to use a predefined append or a normal append in python312.
+    Unless the list is massive, > 100 000, then generate a tuple.
     
     - However, it remains a question if it still makes sense to use a generator when the only purpose
     is to iterate over it once in some other loop, the entire premise of this test is that
