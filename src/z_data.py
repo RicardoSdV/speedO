@@ -312,7 +312,7 @@ class Data:
 
     @property
     def faster_3d_list_of_dicts(self):  # returns tuple[list[dict[str, int]]]
-        return self.M__two_item_dict, self.M__five_item_dict, self.M__ten_item_dict, self.k100__hun_item_dict, self.k10__k_item_dict, self.k__k10_item_dict, self.hun__k100_item_dict, self.ten__M_item_dict
+        return self.M__ten_item_dict, self.k100__hun_item_dict, self.k10__k_item_dict, self.k__k10_item_dict, self.hun__k100_item_dict, self.ten__M_item_dict
 
     @property
     def faster_3d_list_of_sets(self):  # returns tuple[list[set[int]]]

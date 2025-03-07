@@ -1,4 +1,5 @@
 """ For python 2 specific things """
+from itertools import izip
 
 def prnt(*args, **kwargs):
     end = kwargs.pop('end', '\n')
@@ -6,3 +7,6 @@ def prnt(*args, **kwargs):
         print ' '.join(args)
     else:
         print ' '.join(args)+end,
+
+
+vzip = izip

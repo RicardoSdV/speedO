@@ -48,9 +48,22 @@ def sort_results_names_calc_diff(results, names):
 
 def call_callables_get_times(callables, arg, return_time):
     times = []
+    i = 0
     for func in callables:
 
-        if arg is not None:
+        if isinstance(arg, tuple):
+            this_arg = arg[i]
+            i += 1
+            if i > len(arg):
+                i = 0
+            if return_time:
+                elapsed = func(this_arg)
+            else:
+                start_time = time()
+                func(this_arg)
+                elapsed = time() - start_time
+
+        elif arg is not None:
             if return_time:
                 elapsed = func(arg)
             else:
@@ -127,6 +140,9 @@ def make_big_nums_readable(num):
 
 
 def get_lens_2d(list_2d):
+    if isinstance(list_2d, tuple):
+        list_2d = list_2d[0]
+
     return make_big_nums_readable(len(list_2d)), make_big_nums_readable(len(list_2d[0]))
 
 

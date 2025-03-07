@@ -3,3 +3,5 @@
 def prnt(*args, **kwargs):
     end = kwargs.pop('end', '\n')
     print(*args, end=end)
+
+vzip = zip
