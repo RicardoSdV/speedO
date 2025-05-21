@@ -147,7 +147,7 @@ def get_lens_2d(list_2d):
 
 
 def get_public_callables(
-        exclude={'auto_tester', 'repeat', 'ifilter', 'deque'},
+        exclude={'auto_tester', 'repeat', 'ifilter', 'deque', 'partial'},
         frameNum=2,
 ):
     for name, local in _getframe(frameNum).f_locals.items():

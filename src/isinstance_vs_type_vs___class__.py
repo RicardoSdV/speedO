@@ -33,6 +33,7 @@ auto_tester()
 Conclusion:
     - is class best in 27 & 312
     - isinstance best in 38 & 310
+    - type always slow
 
 Python27:
     Name            Secs     %    

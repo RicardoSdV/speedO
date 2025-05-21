@@ -1,45 +1,53 @@
 from itertools import repeat
-from string import Template
 from sys import version
 
 from src.z_data import data
 from src.z_tester import tester
 
 
-num = data.M
+num = data.M10
 _a, _b, _c = '1', '2', '3'
 
 
 def concat():
     a, b, c = _a, _b, _c
     for _ in repeat(None, num):
-        _str = a + b + c
+        a + b + c
 
 def percent_s():
     a, b, c = _a, _b, _c
     for _ in repeat(None, num):
-        _str = '%s%s%s' % (a, b, c)
+        '%s%s%s' % (a, b, c)
 
 def frmt():
     a, b, c = _a, _b, _c
     for _ in repeat(None, num):
-        _str = '{}{}{}'.format(a, b, c)
+        '{}{}{}'.format(a, b, c)
 
 def join_and_make_tuple():
     a, b, c = _a, _b, _c
     for _ in repeat(None, num):
-        _str = ''.join((a, b))
+        ''.join((a, b))
 
 def join_with_existing_tuple():
     abc = (_a, _b, _c)
     for _ in repeat(None, num):
-        _str = ''.join(abc)
+        ''.join(abc)
 
-def template():
+def predef_join_make_tuple():
     a, b, c = _a, _b, _c
-    templ = Template('{a}{b}{c}')
+    join = ''.join
     for _ in repeat(None, num):
-        _str = templ.substitute(a=a, b=b, c=c)
+        join((a, b))
+
+# Templates are so slow it slows down the test so much its not even worth having.
+# they are 10x slower than the next slowest way.
+# from string import Template
+# def template():
+#     a, b, c = _a, _b, _c
+#     subs = Template('$a$b$c').substitute
+#     for _ in repeat(None, num):
+#         subs(a=a, b=b, c=c)
 
 _callables = [
     concat,
@@ -47,17 +55,17 @@ _callables = [
     frmt,
     join_and_make_tuple,
     join_with_existing_tuple,
-    template,
+    predef_join_make_tuple,
 ]
 
 if version.startswith('3'):
-
-    def fstrings():
-        a, b, c = _a, _b, _c
-        for _ in repeat(None, num):
-            _str = f'{a}{b}{c}'
-
-    _callables.append(fstrings)
+    pass
+    # def fstrings():
+    #     a, b, c = _a, _b, _c
+    #     for _ in repeat(None, num):
+    #         f'{a}{b}{c}'
+    #
+    # _callables.append(fstrings)
 
 
 tester(
@@ -72,14 +80,13 @@ Conclusion:
     - In python2 concat or .join
     
     Python27:
-        Testing times mean of 5 rounds: 
         Name                       Secs     %    
-        template                   0.5968   100  
-        frmt                       0.137    23   
-        percent_s                  0.0696   12   
-        join_and_make_tuple        0.0444   7    
-        concat                     0.0382   6    
-        join_with_existing_tuple   0.0362   6    
+        frmt                       1.3864   100  
+        percent_s                  0.6976   50   
+        join_and_make_tuple        0.4476   32   
+        join_with_existing_tuple   0.3808   27   
+        concat                     0.3594   26   
+        predef_join_make_tuple     0.35     25   
         
     Python38:
         Testing times mean of 5 rounds: 
