@@ -201,13 +201,21 @@ class Data:
     @property
     def ten_chars_str(self): return 'dkdjvns fi'
     @property
-    def hun_chars_str(self): return 'dlahbflk dflkhs dfl bflshb qhb flsdbf lksbfel bsfpiwb fskdbj vkcxzbviuwgsf lkubsdkflab osohfvmaskdh'
+    def hun_chars_str(self): return 'dlahbflk dflkhs dfl bflshb qhb flsdbf lksbfel bsfpiwb fskdbj vkcxzbviuwgsf lkubsdkflab osohfvmaskd\n'
     @property
     def k_chars_str(self): return self.hun_chars_str * self.k
     @property
     def k__ten_chars(self): return [self.ten_chars_str for _ in repeat(None, self.k)]
     @property
     def k__hun_chars(self): return [self.hun_chars_str for _ in repeat(None, self.k)]
+    @property
+    def k10_hun_chars(self): return [self.hun_chars_str] * self.k10
+    @property
+    def k100_hun_chars(self): return [self.hun_chars_str] * self.k100
+
+    def yield_hun_chars(self, num):
+        hun_chars = self.hun_chars_str
+        return (hun_chars for _ in repeat(None, num))
 
     ## Slower 3d list elements
     @property

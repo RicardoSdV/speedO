@@ -9,6 +9,7 @@ venv27/
 venv312/
 venv38/
 venv310/
+bin/
 
 *.pyc
 *.pyd
