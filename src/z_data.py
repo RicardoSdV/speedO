@@ -1,5 +1,6 @@
 from collections import deque
-from itertools import repeat
+from functools import partial
+from itertools import repeat, cycle
 from random import shuffle, randint
 from sys import version
 
@@ -139,11 +140,19 @@ class Data:
     def M10__six_int_tuples(self): return [self.six_ints_tup for _ in repeat(None, self.M10)]
 
     @property
-    def two_rnd_ints(self): return [randint(self.zero, self.two-1) for _ in repeat(None, self.two)]
+    def two_rnd_ints (self): return [randint(self.zero, self.two-1) for _ in repeat(None, self.two)]
     @property
-    def ten_rnd_ints(self): return [randint(self.zero, self.ten-1) for _ in repeat(None, self.ten)]
+    def ten_rnd_ints (self): return [randint(self.zero, self.ten-1) for _ in repeat(None, self.ten)]
     @property
-    def hun_rnd_ints(self): return [randint(self.zero, self.hun-1) for _ in repeat(None, self.hun)]
+    def hun_rnd_ints (self): return [randint(self.zero, self.hun-1) for _ in repeat(None, self.hun)]
+    @property
+    def k_rnd_ints   (self): sm = self.zero; lg = self.k;    return [randint(sm, lg) for _ in repeat(None, lg)]
+    @property
+    def k10_rnd_ints (self): sm = self.zero; lg = self.k10;  return [randint(sm, lg) for _ in repeat(None, lg)]
+    @property
+    def k100_rnd_ints(self): sm = self.zero; lg = self.k100; return [randint(sm, lg) for _ in repeat(None, lg)]
+    @property
+    def M_rnd_ints   (self): sm = self.zero; lg = self.M;    return [randint(sm, lg) for _ in repeat(None, lg)]
 
     @property
     def two_Nones (self): return [None] * self.two
@@ -362,3 +371,27 @@ class Data:
 
 
 data = Data()
+
+
+def list_of_tuples_of_two_lens_of_rand_ints(num):
+    inputs = [];
+    append = inputs.append
+    ri = partial(randint, 1, 100000)
+
+    for _ in repeat(None, num):
+        append((ri(), ri(), ri(), ri()))
+        append((ri(), ri(), ri(), ri(), ri(), ri(), ri(), ri()))
+
+    return inputs
+
+
+def list_of_tuples_of_rand_ints(num):
+    inputs = [];
+    append = inputs.append
+    ri = partial(randint, 1, 100000)
+
+    for _ in repeat(None, num):
+        append((ri(), ri(), ri(), ri(), ri(), ri(), ri(), ri()))
+
+    return inputs
+

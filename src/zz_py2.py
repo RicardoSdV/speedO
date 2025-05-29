@@ -10,3 +10,5 @@ def prnt(*args, **kwargs):
 
 
 vzip = izip
+
+vrange = xrange

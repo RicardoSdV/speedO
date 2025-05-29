@@ -18,16 +18,8 @@ def tester_2d(callables, list_3d=None, return_time=False, testing_what='times'):
         from z_data import data
         list_3d = data.faster_3d_list
 
-    if isinstance(list_3d, tuple):
-        iter_lists = vzip(*list_3d)
-        if testing_what == 'memories':
-            raise NotImplementedError('Have a look at call_callables_get_times and do the same for memories')
-    else:
-        iter_lists = iter(list_3d)
-
-
     print('Testing {}:\n'.format(testing_what))
-    for list_2d in iter_lists:
+    for list_2d in list_3d:
         len_outer_list, len_inner_list = get_lens_2d(list_2d)
 
         prnt('Average of {} rounds, len(outer) = {}, len(inner) = {}: '.format(
