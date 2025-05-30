@@ -17,6 +17,9 @@ def _generator(_list):
     for i in _list:
         yield i
 
+def _gen_comp(_list):
+    return (i for i in _list)
+
 def normal_append(list_2d, cal=_normal_appender):
     for inner in list_2d:
         cal(inner)
@@ -33,12 +36,22 @@ def generate_tuple(list_2d, cal=_generator):
     for inner in list_2d:
         tuple(cal(inner))
 
+def gen_comp_list(list_2d, cal=_gen_comp):
+    for inner in list_2d:
+        list(cal(inner))
+
+def gen_comp_tuple(list_2d, cal=_gen_comp):
+    for inner in list_2d:
+        tuple(cal(inner))
+
 tester_2d(
     (
         normal_append,
         predef_append,
         generate_list,
         generate_tuple,
+        gen_comp_list,
+        gen_comp_tuple,
     ),
 )
 
@@ -58,45 +71,57 @@ Conclusion:
     Python27:
         Average of 3 rounds, len(outer) = 1 000 000, len(inner) = 10:  
         Name             Secs     %    
-        generate_list    0.4997   100  
-        normal_append    0.4597   92   
-        generate_tuple   0.4277   86   
-        predef_append    0.3413   68   
+        gen_comp_list    0.5147   100  
+        gen_comp_tuple   0.469    91   
+        generate_list    0.4667   91   
+        normal_append    0.4593   89   
+        generate_tuple   0.4247   83   
+        predef_append    0.3483   68   
         
         Average of 3 rounds, len(outer) = 100 000, len(inner) = 100:  
         Name             Secs     %    
-        normal_append    0.311    100  
-        generate_list    0.2423   78   
-        generate_tuple   0.232    75   
-        predef_append    0.2053   66   
+        normal_append    0.3107   100  
+        gen_comp_list    0.2503   81   
+        generate_list    0.244    79   
+        gen_comp_tuple   0.2397   77   
+        generate_tuple   0.233    75   
+        predef_append    0.2097   67   
         
         Average of 3 rounds, len(outer) = 10 000, len(inner) = 1 000:  
         Name             Secs     %    
-        normal_append    0.2653   100  
-        generate_list    0.1863   70   
-        generate_tuple   0.1837   69   
-        predef_append    0.171    64   
+        normal_append    0.2683   100  
+        gen_comp_tuple   0.19     71   
+        gen_comp_list    0.1887   70   
+        generate_list    0.186    69   
+        generate_tuple   0.185    69   
+        predef_append    0.1693   63   
         
         Average of 3 rounds, len(outer) = 1 000, len(inner) = 10 000:  
         Name             Secs     %    
-        normal_append    0.256    100  
-        generate_tuple   0.1737   68   
-        generate_list    0.171    67   
-        predef_append    0.1613   63   
+        normal_append    0.257    100  
+        generate_tuple   0.1783   69   
+        gen_comp_tuple   0.1763   69   
+        gen_comp_list    0.1733   67   
+        generate_list    0.1697   66   
+        predef_append    0.1603   62   
         
         Average of 3 rounds, len(outer) = 100, len(inner) = 100 000:  
         Name             Secs     %    
-        normal_append    0.2527   100  
-        generate_tuple   0.174    69   
-        generate_list    0.162    64   
-        predef_append    0.1557   62   
+        normal_append    0.246    100  
+        gen_comp_tuple   0.17     69   
+        generate_tuple   0.168    68   
+        gen_comp_list    0.162    66   
+        generate_list    0.1593   65   
+        predef_append    0.151    61   
         
         Average of 3 rounds, len(outer) = 10, len(inner) = 1 000 000:  
         Name             Secs     %    
-        normal_append    0.3723   100  
-        generate_list    0.273    73   
-        predef_append    0.27     73   
-        generate_tuple   0.2297   62   
+        normal_append    0.364    100  
+        generate_list    0.2747   75   
+        gen_comp_list    0.2733   75   
+        predef_append    0.2677   74   
+        generate_tuple   0.237    65   
+        gen_comp_tuple   0.2357   65   
         
     Python38:
         Average of 3 rounds, len(outer) = 1 000 000, len(inner) = 10: 
