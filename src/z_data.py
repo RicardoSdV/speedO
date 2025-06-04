@@ -395,3 +395,14 @@ def list_of_tuples_of_rand_ints(num):
 
     return inputs
 
+
+def dyn_list_of_list_of_rand_ints(lenOuter, lenInner, minInt=1, maxInt=1000000):
+    inputs = [];
+    append = inputs.append
+    ri = partial(randint, minInt, maxInt)
+
+    for _ in repeat(None, lenOuter):
+        append([ri() for _ in repeat(None, lenInner)])
+
+    return inputs
+
