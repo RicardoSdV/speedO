@@ -149,7 +149,7 @@ def get_lens_2d(list_2d):
 def get_public_callables(
         exclude={'auto_tester', 'repeat', 'ifilter', 'deque', 'partial', 'join',
                  'list_of_tuples_of_two_lens_of_rand_ints', 'cycle',
-                 'list_of_tuples_of_rand_ints', },
+                 'list_of_tuples_of_rand_ints', 'weakref'},
         frameNum=2,
 ):
     return (

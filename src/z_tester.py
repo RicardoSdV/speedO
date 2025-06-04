@@ -76,7 +76,7 @@ def auto_tester(testing_what='times', is_callables_returning_time=False, print_r
         for callables in get_start_segregated_callables(seg_parts):
             tester(tuple(callables)         , testing_what=testing_what, is_callables_returning_time=is_callables_returning_time, print_rounds=print_rounds, num_repeats=num_repeats, calking_what=calking_what, info=info)
 
-    if segregator == 'end':
+    elif segregator == 'end':
         for callables in get_end_segregated_callables(seg_parts):
             tester(tuple(callables)         , testing_what=testing_what, is_callables_returning_time=is_callables_returning_time, print_rounds=print_rounds, num_repeats=num_repeats, calking_what=calking_what, info=info)
 

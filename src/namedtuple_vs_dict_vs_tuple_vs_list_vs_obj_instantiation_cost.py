@@ -17,64 +17,89 @@ rand_range = (0, data.k100)
 
 rand_ints = [[randint(*rand_range) for _ in repeat(None, attr_cnt)] for _ in repeat(None, rep_cnt)]
 
-def instantiate_named_tuples():
-    named_tuple = namedtuple('NamedTuple', ('a', 'b', 'c', 'd', 'e', 'f'))
-    named_tuples = [named_tuple(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
+named_tuple = namedtuple('NamedTuple', ('a', 'b', 'c', 'd', 'e', 'f'))
+
+def instantiate_named_tuples(_named_tuple=named_tuple):
+    [_named_tuple(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
+
+
+class NamedTuple(namedtuple('NamedTuple', ('a', 'b', 'c', 'd', 'e', 'f'))):
+    pass
+
+def instantiate_inherit_from_named_tuple_no_slots(_NamedTuple=NamedTuple):
+    [_NamedTuple(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
+
+
+class NamedTupleS(namedtuple('NamedTuple', ('a', 'b', 'c', 'd', 'e', 'f'))):
+    __slots__ = ()
+
+def instantiate_inherit_from_named_tuple_slots(_NamedTuple=NamedTupleS):
+    [_NamedTuple(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
 
 def instantiate_tuples():
-    named_tuples = [(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
+    [(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
+
+class Tuple(tuple):
+    pass
+
+def instantiate_inherits_from_tuple_no_slots(_Tuple=Tuple):
+    [_Tuple((a, b, c, d, e, f)) for a, b, c, d, e, f in rand_ints]
+
+
+class TupleS(tuple):
+    __slots__ = ()
+
+def instantiate_inherits_from_tuple_slots(_Tuple=TupleS):
+    [_Tuple((a, b, c, d, e, f)) for a, b, c, d, e, f in rand_ints]
 
 def instantiate_dicts():
-    dicts = [{'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f} for a, b, c, d, e, f in rand_ints]
+    [{'a': a, 'b': b, 'c': c, 'd': d, 'e': e, 'f': f} for a, b, c, d, e, f in rand_ints]
 
 def instantiate_lists():
-    lists = [[a, b, c, d, e, f] for a, b, c, d, e, f in rand_ints]
+    [[a, b, c, d, e, f] for a, b, c, d, e, f in rand_ints]
+
+
+class ClassSlots(object):
+    __slots__ = ('a', 'b', 'c', 'd', 'e', 'f')
+    def __init__(self, _a, _b, _c, _d, _e, _f):
+        self.a = _a
+        self.b = _b
+        self.c = _c
+        self.d = _d
+        self.e = _e
+        self.f = _f
 
 def instantiate_object_slots():
-    class ClassSlots(object):
-        __slots__ = ('a', 'b', 'c', 'd', 'e', 'f')
-        def __init__(self, _a, _b, _c, _d, _e, _f):
-            self.a = _a
-            self.b = _b
-            self.c = _c
-            self.d = _d
-            self.e = _e
-            self.f = _f
+    [ClassSlots(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
 
-    objs = [ClassSlots(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
 
-def instantiate_object_slots_comma_init():
-    class ClassWithSlotsCommaInit(object):
-        __slots__ = ('a', 'b', 'c', 'd', 'e', 'f')
-        def __init__(self, _a, _b, _c, _d, _e, _f):
-            self.a, self.b, self.c, self.d, self.e, self.f = 1, 2, 3, 4, 5, 6
-
-    objs = [ClassWithSlotsCommaInit(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
+class ClassNoSlots(object):
+    def __init__(self, _a, _b, _c, _d, _e, _f):
+        self.a = _a
+        self.b = _b
+        self.c = _c
+        self.d = _d
+        self.e = _e
+        self.f = _f
 
 def instantiate_object_no_slots():
-    class ClassNoSlots(object):
-        def __init__(self, _a, _b, _c, _d, _e, _f):
-            self.a = _a
-            self.b = _b
-            self.c = _c
-            self.d = _d
-            self.e = _e
-            self.f = _f
+    [ClassNoSlots(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
 
-    objs = [ClassNoSlots(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
+
+class OldStyleClass:
+    def __init__(self, _a, _b, _c, _d, _e, _f):
+        self.a = _a
+        self.b = _b
+        self.c = _c
+        self.d = _d
+        self.e = _e
+        self.f = _f
 
 def instantiate_object_old_style():
     """ Should perform the same as ClassNoSlots except in python27 """
-    class OldStyleClass:
-        def __init__(self, _a, _b, _c, _d, _e, _f):
-            self.a = _a
-            self.b = _b
-            self.c = _c
-            self.d = _d
-            self.e = _e
-            self.f = _f
+    [OldStyleClass(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
 
-    objs = [OldStyleClass(a, b, c, d, e, f) for a, b, c, d, e, f in rand_ints]
+
 
 if __name__ == '__main__':
     tester(
@@ -85,10 +110,14 @@ if __name__ == '__main__':
             instantiate_lists,
             instantiate_object_slots,
             instantiate_object_no_slots,
-            instantiate_object_slots_comma_init,
-            # instantiate_object_old_style,
+            instantiate_inherit_from_named_tuple_slots,
+            instantiate_inherit_from_named_tuple_no_slots,
+            instantiate_inherits_from_tuple_slots,
+            instantiate_inherit_from_named_tuple_no_slots,
+            instantiate_object_old_style,
         ),
     )
+
     tester(
         (
             instantiate_named_tuples,
@@ -97,8 +126,9 @@ if __name__ == '__main__':
             instantiate_lists,
             instantiate_object_slots,
             instantiate_object_no_slots,
-            instantiate_object_slots_comma_init,
-            # instantiate_object_old_style,
+            instantiate_inherit_from_named_tuple_slots,
+            instantiate_inherit_from_named_tuple_no_slots,
+            instantiate_object_old_style,
         ),
         testing_what='memories'
     )
@@ -127,24 +157,30 @@ Conclusion:
         namedtuple & object with __slots__, although do check attr access costs!
         
         Testing times mean of 5 rounds: 
-        Name                           Secs     %    
-        instantiate_object_old_style   0.9216   100  
-        instantiate_object_no_slots    0.8964   97   
-        instantiate_named_tuples       0.6104   66   
-        instantiate_object_slots       0.5074   55   
-        instantiate_dicts              0.4862   53   
-        instantiate_lists              0.3768   41   
-        instantiate_tuples             0.104    11   
+        Name                                            Secs     %    
+        instantiate_object_no_slots                     0.9654   100  
+        instantiate_object_old_style                    0.9552   99   
+        instantiate_inherit_from_named_tuple_slots      0.6214   64   
+        instantiate_inherit_from_named_tuple_no_slots   0.6076   63   
+        instantiate_named_tuples                        0.5868   61   
+        instantiate_inherit_from_named_tuple_no_slots   0.5816   60   
+        instantiate_object_slots                        0.5216   54   
+        instantiate_dicts                               0.5042   52   
+        instantiate_inherits_from_tuple_slots           0.4246   44   
+        instantiate_lists                               0.3642   38   
+        instantiate_tuples                              0.1088   11   
     
         Testing memories mean of 5 rounds: 
-        Name                           Mibs       %    
-        instantiate_object_old_style   930.5547   100  
-        instantiate_dicts              875.543    94   
-        instantiate_object_no_slots    853.6445   92   
-        instantiate_object_slots       18.2617    2    
-        instantiate_lists              13.0938    1    
-        instantiate_named_tuples       12.3711    1    
-        instantiate_tuples             7.6328     1    
+        Name                                            Mibs       %    
+        instantiate_object_old_style                    838.8594   100  
+        instantiate_object_no_slots                     790.4922   94   
+        instantiate_dicts                               777.4727   93   
+        instantiate_tuples                              7.6367     1    
+        instantiate_lists                               7.2148     1    
+        instantiate_named_tuples                        7.1836     1    
+        instantiate_object_slots                        6.918      1    
+        instantiate_inherit_from_named_tuple_no_slots   6.7383     1    
+        instantiate_inherit_from_named_tuple_slots      5.7813     1  
     
     Python38:
         - Fastest no attr names tuple
