@@ -1,4 +1,3 @@
-from src.z_data import data
 from src.z_tester import tester_2d
 
 
