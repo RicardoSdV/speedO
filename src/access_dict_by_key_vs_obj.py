@@ -16,7 +16,6 @@ class _NoSlots(object):
 no_slots = _NoSlots()
 no_slots.myKey = 1
 
-
 num = data.M100
 
 

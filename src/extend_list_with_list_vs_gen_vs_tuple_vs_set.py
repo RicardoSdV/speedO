@@ -80,7 +80,7 @@ Conclusion:
         with_list       1.4528   49   
         
     Python38:
-        r = 10
+        r = 1
         Name            Secs     %    
         with_tuple      0.3201   100  
         with_gen        0.2792   87   
@@ -100,7 +100,7 @@ Conclusion:
         with_appendTo   0.2045   60    
         
     Python312:
-        r = 10
+        r = 100
         Name            Secs     %    
         with_tuple      0.3271   100  
         with_gen        0.3178   97   
