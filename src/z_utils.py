@@ -1,4 +1,4 @@
-from collections import defaultdict, OrderedDict
+from collections import defaultdict
 from functools import partial
 from sys import _getframe
 from time import time
@@ -46,7 +46,7 @@ def sort_results_names_calc_diff(results, names):
     return sorted_names, sorted_times, sorted_percentages
 
 
-def call_callables_get_times(callables, arg, return_time):
+def call_callables_get_times(callables, arg, return_time, open_file):
     times = []
     i = 0
     for func in callables:
@@ -57,33 +57,60 @@ def call_callables_get_times(callables, arg, return_time):
             if i > len(arg):
                 i = 0
             if return_time:
-                elapsed = func(this_arg)
+                if open_file:
+                    elapsed = func(this_arg, open_file)
+                else:
+                    elapsed = func(this_arg)
             else:
-                start_time = time()
-                func(this_arg)
-                elapsed = time() - start_time
+                if open_file:
+                    start_time = time()
+                    func(this_arg, open_file)
+                    elapsed = time() - start_time
+                else:
+                    start_time = time()
+                    func(this_arg)
+                    elapsed = time() - start_time
 
         elif arg is not None:
             if return_time:
-                elapsed = func(arg)
+                if open_file:
+                    elapsed = func(arg, open_file)
+                else:
+                    elapsed = func(arg)
             else:
-                start_time = time()
-                func(arg)
-                elapsed = time() - start_time
+                if open_file:
+                    start_time = time()
+                    func(arg, open_file)
+                    elapsed = time() - start_time
+                else:
+                    start_time = time()
+                    func(arg)
+                    elapsed = time() - start_time
         else:
             if return_time:
-                elapsed = func()
+                if open_file:
+                    elapsed = func(open_file)
+                else:
+                    elapsed = func()
             else:
-                start_time = time()
-                func()
-                elapsed = time() - start_time
+                if open_file:
+                    start_time = time()
+                    func(open_file)
+                    elapsed = time() - start_time
+                else:
+                    start_time = time()
+                    func()
+                    elapsed = time() - start_time
 
         times.append(elapsed)
 
+        if open_file:
+            open_file.seek(0)
+            open_file.truncate()
+
     return times
 
-
-def call_callables_get_memories(callables, arg, __):
+def call_callables_get_memories(callables, arg, _, __):
     arg = () if arg is None else (arg, )
     memories = []
     for func in callables:
@@ -94,8 +121,10 @@ def call_callables_get_memories(callables, arg, __):
 
 
 def call_caller_of_callables_repeatedly_get_resultss(
-        num_repeats, callables, testing_what, return_time, print_rounds, arg=None
+        num_repeats, callables, testing_what, return_time, print_rounds, arg=None, open_file=None, make_new=False
 ):
+    from src.z_data import data
+
     if print_rounds: print('Repeating the test {} times'.format(num_repeats))
 
     if testing_what == 'times':
@@ -109,8 +138,13 @@ def call_caller_of_callables_repeatedly_get_resultss(
     for i in range(num_repeats):
         if print_rounds: print('    Repeat number: {}'.format(i+1))
 
+        if make_new:
+            _arg = getattr(data, arg)
+        else:
+            _arg = arg
+
         resultss.append(
-            caller_of_callables(callables, arg, return_time)
+            caller_of_callables(callables, _arg, return_time, open_file)
         )
 
     print('')
@@ -151,13 +185,15 @@ def get_public_callables(
             'auto_tester', 'repeat', 'ifilter', 'deque', 'partial', 'join',
             'list_of_tuples_of_two_lens_of_rand_ints', 'cycle', 'list_of_tuples_of_rand_ints',
             'weakref', 'cycle', 'dyn_list_of_list_of_rand_ints', 'namedtuple',
+            'auto_tester_2d',
         },
         frameNum=2,
 ):
-    return (
+    res = (
         local for name, local in _getframe(frameNum).f_locals.items()
         if not name.startswith('_') and callable(local) and name not in exclude
     )
+    return res
 
 def start_segregator(callable, num_parts):
     return '_'.join(callable.__name__.split('_')[:num_parts])
@@ -181,3 +217,16 @@ def get_segregated_callables(segregator, num_parts):
 get_start_segregated_callables = partial(get_segregated_callables, start_segregator)
 get_end_segregated_callables   = partial(get_segregated_callables, end_segregator)
 
+def base_auto_tester(tester, **kwargs):
+    seggregator = kwargs.pop('segregator')
+    seg_parts = kwargs.pop('seg_parts')
+
+    if seggregator == 'start':
+        for callables in get_start_segregated_callables(seg_parts):
+            tester(tuple(callables), **kwargs)
+
+    elif seggregator == 'end':
+        for callables in get_end_segregated_callables(seg_parts):
+            tester(tuple(callables), **kwargs)
+    else:
+        tester(tuple(get_public_callables(frameNum=3)), **kwargs)

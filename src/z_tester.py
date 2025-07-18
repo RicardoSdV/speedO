@@ -1,32 +1,34 @@
 from z_utils import get_lens_2d, call_caller_of_callables_repeatedly_get_resultss, sort_results_names_calc_diff, \
-    pretty_print_results, calc_mean, calc_min, get_public_callables, get_end_segregated_callables, get_start_segregated_callables
+    pretty_print_results, calc_mean, calc_min, get_public_callables, get_end_segregated_callables, get_start_segregated_callables, base_auto_tester
 
 from zz_import import prnt, vzip
 
 
 
-def tester_2d(callables, list_3d=None, return_time=False, testing_what='times'):
+def tester_2d(callables, list_3d=None, return_time=False, testing_what='times', open_file=None, make_new=False):
     """
     Some tests involve nested loops were some variation between loop length is needed
     to demonstrate how something behaves with different data sizes, this tester automates this.
     """
+    from z_data import data
 
     num_repeats = 3
     names = [func.__name__ for func in callables]
 
-    if list_3d is None:
-        from z_data import data
+    if list_3d is None and not make_new:
         list_3d = data.faster_3d_list
 
     print('Testing {}:\n'.format(testing_what))
     for list_2d in list_3d:
+
         len_outer_list, len_inner_list = get_lens_2d(list_2d)
 
         prnt('Average of {} rounds, len(outer) = {}, len(inner) = {}: '.format(
             num_repeats, len_outer_list, len_inner_list), end='')
 
         resultss = call_caller_of_callables_repeatedly_get_resultss(
-            num_repeats, callables, testing_what, return_time, False, arg=list_2d
+            num_repeats, callables, testing_what, return_time, False,
+            arg=list_2d, open_file=open_file, make_new=make_new,
         )
 
         result = calc_mean(resultss, num_repeats)
@@ -37,10 +39,15 @@ def tester_2d(callables, list_3d=None, return_time=False, testing_what='times'):
     print('')
 
 
-def tester(callables, testing_what='times', is_callables_returning_time=False, print_rounds=False, num_repeats=5, calking_what='default', info='', print_num_rounds=False):
+def tester(
+        callables, testing_what='times', is_callables_returning_time=False, print_rounds=False,
+        num_repeats=5, calking_what='default', info='', print_num_rounds=False, open_file=None,
+        make_new=False,
+):
 
     resultss = call_caller_of_callables_repeatedly_get_resultss(
-        num_repeats, callables, testing_what, is_callables_returning_time, print_rounds
+        num_repeats, callables, testing_what, is_callables_returning_time,
+        print_rounds, open_file, make_new,
     )
 
     if calking_what == 'default':
@@ -68,22 +75,29 @@ def tester(callables, testing_what='times', is_callables_returning_time=False, p
     pretty_print_results(names, results, percentages, testing_what)
 
 
-def auto_tester(testing_what='times', is_callables_returning_time=False, print_rounds=False, num_repeats=5, calking_what='default', info='', segregator='default', seg_parts=1):
+def auto_tester(
+        testing_what='times', is_callables_returning_time=False, print_rounds=False, num_repeats=5,
+        calking_what='default', info='', segregator=('start', 'end'), seg_parts=1, open_file=None,
+        make_new=False,
+):
     """ Entirely fed up with writing the names of the callables over and over,
     so will test most callables that don't start with _ in the file """
 
-    if segregator == 'start':
-        for callables in get_start_segregated_callables(seg_parts):
-            tester(tuple(callables)         , testing_what=testing_what, is_callables_returning_time=is_callables_returning_time, print_rounds=print_rounds, num_repeats=num_repeats, calking_what=calking_what, info=info)
-
-    elif segregator == 'end':
-        for callables in get_end_segregated_callables(seg_parts):
-            tester(tuple(callables)         , testing_what=testing_what, is_callables_returning_time=is_callables_returning_time, print_rounds=print_rounds, num_repeats=num_repeats, calking_what=calking_what, info=info)
-
-    else:
-        tester(tuple(get_public_callables()), testing_what=testing_what, is_callables_returning_time=is_callables_returning_time, print_rounds=print_rounds, num_repeats=num_repeats, calking_what=calking_what, info=info)
+    base_auto_tester(
+        tester, testing_what=testing_what, is_callables_returning_time=is_callables_returning_time,
+        print_rounds=print_rounds, num_repeats=num_repeats, calking_what=calking_what, info=info,
+        segregator=segregator, seg_parts=seg_parts, open_file=open_file, make_new=make_new,
+    )
 
 
+def auto_tester_2d(
+        list_3d=None, return_time=False, testing_what='times', segregator=('start', 'end'),
+        seg_parts=1, open_file=None, make_new=False,
+):
+    base_auto_tester(
+        tester_2d, list_3d=list_3d, return_time=return_time, testing_what=testing_what,
+        segregator=segregator, seg_parts=seg_parts, open_file=open_file, make_new=make_new,
+    )
 
 
 

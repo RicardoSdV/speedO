@@ -210,7 +210,9 @@ class Data:
     @property
     def ten_chars_str(self): return 'dkdjvns fi'
     @property
-    def hun_chars_str(self): return 'dlahbflk dflkhs dfl bflshb qhb flsdbf lksbfel bsfpiwb fskdbj vkcxzbviuwgsf lkubsdkflab osohfvmaskd\n'
+    def hun_chars_str(self): return 'dlahbflk/dflkhs/dfl/bflshb/qhb/flsdbf/lksbfel/bsfpiwb/fskdbj/vkcxzbviuwgsf/lkubsdkflab/osohfvmaskd/'
+    @property
+    def hun_chars_intern(self): return 'dlahbflk_dflkhs_dfl_bflshb_qhb_flsdbf_lksbfel_bsfpiwb_fskdbj_vkcxzbviuwgsf_lkubsdkflab_osohfvmaskds'
     @property
     def k_chars_str(self): return self.hun_chars_str * self.k
     @property
@@ -299,17 +301,17 @@ class Data:
     def k10__hun_rnd_ints (self): return [self.hun_rnd_ints for _ in repeat(None, self.k10)]
 
     @property
-    def M__ten_ints_deque   (self): return deque(self.M__ten_ints)
+    def M__ten_deque   (self): return convert_lists_2d_in_place(self.M__ten_ints, deque)
     @property
-    def k100__hun_ints_deque(self): return deque(self.k100__hun_ints)
+    def k100__hun_deque(self): return convert_lists_2d_in_place(self.k100__hun_ints, deque)
     @property
-    def k10__k_ints_deque   (self): return deque(self.k10__k_ints)
+    def k10__k_deque   (self): return convert_lists_2d_in_place(self.k10__k_ints, deque)
     @property
-    def k__k10_ints_deque   (self): return deque(self.k__k10_ints)
+    def k__k10_deque   (self): return convert_lists_2d_in_place(self.k__k10_ints, deque)
     @property
-    def hun__k100_ints_deque(self): return deque(self.hun__k100_ints)
+    def hun__k100_deque(self): return convert_lists_2d_in_place(self.hun__k100_ints, deque)
     @property
-    def ten__M_ints_deque   (self): return deque(self.ten__M_ints)
+    def ten__M_deque   (self): return convert_lists_2d_in_place(self.ten__M_ints, deque)
 
     @property
     def slower_3d_list(self):
@@ -320,6 +322,14 @@ class Data:
     @property
     def super_fast_3d_list(self):
         return self.k100__ten_ints, self.k10__hun_ints, self.k__k_ints, self.hun__k10_ints, self.ten__k100_ints
+
+    @property
+    def faster_3d_deque(self):
+        return self.M__ten_deque, self.k100__hun_deque, self.k10__k_deque, self.k__k10_deque, self.hun__k100_deque, self.ten__M_deque
+
+    @property
+    def faster_3d_deque_names(self):
+        return 'M__ten_deque', 'k100__hun_deque', 'k10__k_deque', 'k__k10_deque', 'hun__k100_deque', 'ten__M_deque'
 
     @property
     def faster_3d_list_rev_inner(self):
@@ -348,10 +358,6 @@ class Data:
         faster_3d_list = self.faster_3d_list
         convert_lists_3d_in_place(faster_3d_list, tuple)
         return faster_3d_list
-
-    @property
-    def faster_3d_deque(self):
-        return self.M__ten_ints_deque, self.k100__hun_ints_deque, self.k10__k_ints_deque, self.k__k10_ints_deque, self.hun__k100_ints_deque, self.ten__M_ints_deque
 
     @property
     def shuffled_faster_3d_list(self):
