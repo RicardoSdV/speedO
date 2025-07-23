@@ -46,10 +46,11 @@ def sort_results_names_calc_diff(results, names):
     return sorted_names, sorted_times, sorted_percentages
 
 
-def call_callables_get_times(callables, arg, return_time, open_file):
+def call_callables_get_times(callables, getArg, return_time, open_file):
     times = []
     i = 0
     for func in callables:
+        arg = getArg()
 
         if isinstance(arg, tuple):
             this_arg = arg[i]
@@ -110,7 +111,8 @@ def call_callables_get_times(callables, arg, return_time, open_file):
 
     return times
 
-def call_callables_get_memories(callables, arg, _, __):
+def call_callables_get_memories(callables, getArg, *_):
+    arg = getArg()
     arg = () if arg is None else (arg, )
     memories = []
     for func in callables:
@@ -123,8 +125,6 @@ def call_callables_get_memories(callables, arg, _, __):
 def call_caller_of_callables_repeatedly_get_resultss(
         num_repeats, callables, testing_what, return_time, print_rounds, arg=None, open_file=None, make_new=False
 ):
-    from src.z_data import data
-
     if print_rounds: print('Repeating the test {} times'.format(num_repeats))
 
     if testing_what == 'times':
@@ -132,19 +132,19 @@ def call_caller_of_callables_repeatedly_get_resultss(
     elif testing_what == 'memories':
         caller_of_callables = call_callables_get_memories
     else:
-        raise TypeError('call__call_callables__repeatedly_get_average_results only supports testing_what memories or times')
+        raise TypeError('call_caller_of_callables_repeatedly_get_resultss only supports testing_what memories or times')
 
-    resultss = []
+    from src.z_data import data
+    if make_new:
+        getArg = partial(getattr, data, arg)
+    else:
+        getArg = partial(lambda: arg)
+
+    resultss = []; append = resultss.append
     for i in range(num_repeats):
-        if print_rounds: print('    Repeat number: {}'.format(i+1))
-
-        if make_new:
-            _arg = getattr(data, arg)
-        else:
-            _arg = arg
-
-        resultss.append(
-            caller_of_callables(callables, _arg, return_time, open_file)
+        if print_rounds: print('    Repeat number: %s' % (i+1))
+        append(
+            caller_of_callables(callables, getArg, return_time, open_file)
         )
 
     print('')
@@ -185,7 +185,7 @@ def get_public_callables(
             'auto_tester', 'repeat', 'ifilter', 'deque', 'partial', 'join',
             'list_of_tuples_of_two_lens_of_rand_ints', 'cycle', 'list_of_tuples_of_rand_ints',
             'weakref', 'cycle', 'dyn_list_of_list_of_rand_ints', 'namedtuple',
-            'auto_tester_2d',
+            'auto_tester_2d', 'chain',
         },
         frameNum=2,
 ):

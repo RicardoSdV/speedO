@@ -330,6 +330,9 @@ class Data:
     @property
     def faster_3d_deque_names(self):
         return 'M__ten_deque', 'k100__hun_deque', 'k10__k_deque', 'k__k10_deque', 'hun__k100_deque', 'ten__M_deque'
+    @property
+    def faster_3d_list_names(self):
+        return 'M__ten_ints', 'k100__hun_ints', 'k10__k_ints', 'k__k10_ints', 'hun__k100_ints', 'ten__M_ints'
 
     @property
     def faster_3d_list_rev_inner(self):
