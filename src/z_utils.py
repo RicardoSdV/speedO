@@ -185,7 +185,7 @@ def get_public_callables(
             'auto_tester', 'repeat', 'ifilter', 'deque', 'partial', 'join',
             'list_of_tuples_of_two_lens_of_rand_ints', 'cycle', 'list_of_tuples_of_rand_ints',
             'weakref', 'cycle', 'dyn_list_of_list_of_rand_ints', 'namedtuple',
-            'auto_tester_2d', 'chain',
+            'auto_tester_2d', 'chain', 'islice'
         },
         frameNum=2,
 ):
