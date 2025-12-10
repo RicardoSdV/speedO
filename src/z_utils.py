@@ -202,8 +202,8 @@ def end_segregator(callable, num_parts):
     end = '_'.join(callable.__name__.split('_')[-num_parts:])
     return int(end) if end.isdigit() else end
 
-def get_segregated_callables(segregator, num_parts):
-    callables = get_public_callables(frameNum=3)
+def get_segregated_callables(segregator, num_parts, frameNum=4):
+    callables = get_public_callables(frameNum=frameNum)
 
     segCallables = defaultdict(list)
     for callable in callables:
