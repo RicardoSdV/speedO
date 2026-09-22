@@ -21,7 +21,9 @@ dict_growth()
 
 """
 Conclusion:
-    There seems to be no rhyme nor reason to list growth rates
+    There seems to be no rhyme nor reason to dict growth rates
+    
+    edit: Load factor!
 
     Python27:
         Num el     Diff     Size
