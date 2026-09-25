@@ -39,6 +39,9 @@ def convert_lists_2d_in_place(lists, converter):
         lists[i] = converter(_list)
     return lists
 
+def type_cast_list_elements(caster, _list):
+    return [caster(el) for el in _list]
+
 def reverse_inner_of_3d_in_place(list3d):
     for outer in list3d:
         for inner in outer:
@@ -374,6 +377,13 @@ class Data:
         return shufflee
 
     @property
+    def faster_3d_list_of_strings(self):
+        _list = self.faster_3d_list
+        caster = partial(type_cast_list_elements, str)
+        convert_lists_3d_in_place(_list, caster)
+        return _list
+
+    @property
     def M_ptrn_chars_lsts(self): return self.ptrn_chars_lst * self.M
     @property
     def M_no_ptrn_chars_lsts(self): return self.no_ptrn_chars_lst * self.M
@@ -381,10 +391,8 @@ class Data:
 
 data = Data()
 
-
 def list_of_tuples_of_two_lens_of_rand_ints(num):
-    inputs = [];
-    append = inputs.append
+    inputs = []; append = inputs.append
     ri = partial(randint, 1, 100000)
 
     for _ in repeat(None, num):
@@ -414,4 +422,3 @@ def dyn_list_of_list_of_rand_ints(lenOuter, lenInner, minInt=1, maxInt=1000000):
         append([ri() for _ in repeat(None, lenInner)])
 
     return inputs
-
