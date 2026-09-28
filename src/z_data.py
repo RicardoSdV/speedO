@@ -1,7 +1,7 @@
 from collections import deque
 from functools import partial
-from itertools import repeat, cycle
-from random import shuffle, randint
+from itertools import repeat
+from random import shuffle, randint, choice
 from sys import version
 
 if version.startswith('2'):
@@ -383,6 +383,25 @@ class Data:
         convert_lists_3d_in_place(_list, caster)
         return _list
 
+    def make_faster_3d_list_of_rnd_repeat_strs(self, factor, min_str_len, max_str_len):
+        return (
+            [rnd_strs_with_reps(self.ten , factor, min_str_len, max_str_len) for _ in repeat(None, self.M   )],
+            [rnd_strs_with_reps(self.hun , factor, min_str_len, max_str_len) for _ in repeat(None, self.k100)],
+            [rnd_strs_with_reps(self.k   , factor, min_str_len, max_str_len) for _ in repeat(None, self.k10 )],
+            [rnd_strs_with_reps(self.k10 , factor, min_str_len, max_str_len) for _ in repeat(None, self.k   )],
+            [rnd_strs_with_reps(self.k100, factor, min_str_len, max_str_len) for _ in repeat(None, self.hun )],
+            [rnd_strs_with_reps(self.M   , factor, min_str_len, max_str_len) for _ in repeat(None, self.ten )],
+        )
+
+    def make_super_fast_3d_list_of_rnd_repeat_strs(self, factor, min_str_len, max_str_len):
+        return (
+            [rnd_strs_with_reps(self.ten , factor, min_str_len, max_str_len) for _ in repeat(None, self.k100)],
+            [rnd_strs_with_reps(self.hun , factor, min_str_len, max_str_len) for _ in repeat(None, self.k10 )],
+            [rnd_strs_with_reps(self.k   , factor, min_str_len, max_str_len) for _ in repeat(None, self.k   )],
+            [rnd_strs_with_reps(self.k10 , factor, min_str_len, max_str_len) for _ in repeat(None, self.hun )],
+            [rnd_strs_with_reps(self.k100, factor, min_str_len, max_str_len) for _ in repeat(None, self.ten )],
+        )
+
     @property
     def M_ptrn_chars_lsts(self): return self.ptrn_chars_lst * self.M
     @property
@@ -403,8 +422,7 @@ def list_of_tuples_of_two_lens_of_rand_ints(num):
 
 
 def list_of_tuples_of_rand_ints(num):
-    inputs = [];
-    append = inputs.append
+    inputs = []; append = inputs.append
     ri = partial(randint, 1, 100000)
 
     for _ in repeat(None, num):
@@ -414,11 +432,52 @@ def list_of_tuples_of_rand_ints(num):
 
 
 def dyn_list_of_list_of_rand_ints(lenOuter, lenInner, minInt=1, maxInt=1000000):
-    inputs = [];
-    append = inputs.append
+    inputs = []; append = inputs.append
     ri = partial(randint, minInt, maxInt)
 
     for _ in repeat(None, lenOuter):
         append([ri() for _ in repeat(None, lenInner)])
 
     return inputs
+
+
+lower_case_alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+upper_case_alphabet = [el.upper() for el in lower_case_alphabet]
+code_symbols = [' ', '.', ',', '[', ']', '{', '}', '=', '+', '-', '/', ':', ';', '*', "'", '"', '&', '_', '%', '<', '>']
+all_code_chars = lower_case_alphabet + upper_case_alphabet + code_symbols
+
+
+def rnd_strs_with_reps(list_len, factor, min_str_len, max_str_len, chars=all_code_chars, _empty_join=''.join):
+    minReps = 1
+    maxReps = max(1, int(factor * list_len))
+
+    strs = []; strsExt = strs.extend
+    curr_len = 0
+
+    for _ in repeat(None, list_len):
+        reps = randint(minReps, maxReps)
+        curr_len += reps
+        if curr_len > list_len:
+            diff = curr_len - list_len
+            reps -= diff
+            curr_len = list_len
+
+        str_len = randint(min_str_len, max_str_len)
+        _str = _empty_join([choice(chars) for _ in repeat(None, str_len)])
+        strsExt([_str] * reps)
+
+        if curr_len == list_len:
+            break
+
+    shuffle(strs)
+    return strs
+
+
+def list_2d_of_rand_strs_with_reps(len_outer, len_inner, factor, min_str_len, max_str_len):
+    outer = []; outer_app = outer.append
+
+    for _ in repeat(None, len_outer):
+        inner = rnd_strs_with_reps(len_inner, factor, min_str_len, max_str_len)
+        outer_app(inner)
+
+    return outer

@@ -7,4 +7,9 @@ else:
     from zz_py3 import prnt, vzip, vrange
     from time import perf_counter as clock
 
-__all__ = ('prnt', 'vzip', 'vrange', 'clock')
+try:
+    from sys import intern
+except ImportError:
+    intern = intern
+
+__all__ = ('prnt', 'vzip', 'vrange', 'clock', 'intern')
